@@ -47,7 +47,7 @@ footer {
 }
 
 .navbar.navbar-dark {
-    background-color: #bf5fbc !important; /* cambia según la página */
+    background-color: #bf5fbc !important;
 }
 
 .navbar .nav-link,
@@ -58,4 +58,10 @@ footer {
 .navbar .nav-link.active {
     color: #551454 !important;
     font-weight: bold;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s ease-in-out;
+    border-color: #bf5fbc;
 }
