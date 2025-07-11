@@ -5,6 +5,54 @@ body {
 }
 
 .navbar {
+    background-color: #822480;
+}
+
+.nav-link,
+.navbar-brand {
+    color: #ffffff !important;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    color: #bf5fbc !important;
+}
+
+h4 {
+    color: #551454;
+}
+
+input.form-control:focus {
+    border-color: #ae34aa;
+    box-shadow: 0 0 0 0.2rem rgba(190, 95, 188, 0.25);
+}
+
+.btn-success {
+    background-color: #ae34aa;
+    border-color: #ae34aa;
+}
+
+.btn-success:hover {
+    background-color: #bf5fbc;
+    border-color: #bf5fbc;
+}
+
+.btn-danger {
+    background-color: #551454;
+    border-color: #551454;
+}
+
+.btn-danger:hover {
+    background-color: #822480;
+    border-color: #822480;
+}
+
+footer {
+    border-top: 1px solid #ae34aa;
+    color: #551454;
+}
+
+.navbar {
     background-color: #ae34aa;
 }
 
@@ -16,6 +64,48 @@ body {
 .nav-link.active {
     font-weight: bold;
     color: #bf5fbc !important;
+}
+
+h2 {
+    color: #551454;
+}
+
+#toggle-btn {
+    color: #ae34aa;
+    border-color: #ae34aa;
+}
+
+#toggle-btn:hover {
+    background-color: #ae34aa;
+    color: white;
+}
+
+.table thead {
+    background-color: #bf5fbc;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: #f3e6f4;
+}
+
+footer {
+    border-top: 1px solid #822480;
+    color: #551454;
+}
+
+.navbar.navbar-dark {
+    background-color: #bf5fbc !important; 
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link.active {
+    color: #551454 !important;
+    font-weight: bold;
 }
 
 h4 {
@@ -97,17 +187,6 @@ h4 {
     margin: 0 auto 4rem auto;
 }
 
-.btn-cancelar {
-    background-color: #ae34aa; /* morado */
-    border-color: #ae34aa;
-    color: white;
-}
-
-.btn-cancelar:hover {
-    background-color: #d37fd4; /* morado claro al pasar el mouse */
-    border-color: #d37fd4;
-    color: white;
-}
 
 /* Footer */
 footer {
@@ -115,4 +194,27 @@ footer {
     color: #551454;
     padding-top: 1rem;
 }
+
+
+
+
+
+
+/* 
+
+#270625
+
+#551454
+
+#822480
+
+#ae34aa
+
+#bf5fbc
+
+
+
+
+
+ */
 
