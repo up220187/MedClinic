@@ -66,35 +66,3 @@ footer {
     border-color: #bf5fbc;
 }
 
-.btn-primary {
-    background-color: #ae34aa;
-    border-color: #ae34aa;
-    font-weight: bold;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #bf5fbc;
-    border-color: #bf5fbc;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(191, 95, 188, 0.3);
-}
-
-.btn-outline-primary {
-    color: #ae34aa;
-    border-color: #ae34aa;
-    font-weight: bold;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-    background-color: #bf5fbc;
-    border-color: #bf5fbc;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(191, 95, 188, 0.3);
-}
