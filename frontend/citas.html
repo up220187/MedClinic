@@ -1,607 +1,799 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mis Citas - Consulta Médica</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="css/paciente.css">
-</head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+      integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link rel="stylesheet" href="css/paciente.css" />
+  </head>
 
-<body>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-purple sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="homepage.html">
-                <i class="fas fa-heartbeat me-2"></i>
-                <span>Consulta Médica</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="homepage.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="medicos.html">Nuestros Médicos</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="citas.html">Mis Citas</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="logoutBtn">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="homepage.html">
+          <i class="fas fa-heartbeat me-2"></i>
+          <span>Consulta Médica</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="homepage.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="medicos.html">Nuestros Médicos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="citas.html">Mis Citas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <main class="container mt-5">
-        <h1 class="text-center text-purple mb-4">Gestión de Citas Médicas</h1>
+      <h1 class="text-center text-purple mb-4">Gestión de Citas Médicas</h1>
 
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100 card-cita">
-                    <div class="card-header">
-                        <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
-                    </div>
-                    <div class="card-body">
-                        <form id="form-cita">
-                            <div class="mb-3">
-                                <label for="doctorSelect" class="form-label">Médico</label>
-                                <select class="form-select" id="doctorSelect" required>
-                                    <option value="">Selecciona un médico</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="especialidadInput" class="form-label">Especialidad</label>
-                                <input type="text" class="form-control" id="especialidadInput" readonly disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="fechaCita" class="form-label">Fecha y Hora</label>
-                                <input type="text" class="form-control" id="fechaCita" placeholder="Selecciona la fecha y hora" required>
-                            </div>
-                            <div class="mb-3" id="diasTrabajoDisplay" style="display: none;">
-                                <label class="form-label">Días de Atención:</label>
-                                <span class="form-control-plaintext" id="diasTrabajoTexto"></span>
-                            </div>
-
-                            <button type="submit" class="btn btn-purple w-100">
-                                <i class="fas fa-plus-circle me-2"></i>Agendar Cita
-                            </button>
-                            <div id="agendarMensaje" class="mt-3 text-center fw-bold"></div>
-                        </form>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm h-100 card-cita">
+            <div class="card-header">
+              <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
             </div>
-
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100 card-cita">
-                    <div class="card-header">
-                        <i class="fas fa-list-alt me-2"></i>Mis Citas Agendadas
-                    </div>
-                    <div class="card-body">
-                        <div id="lista-citas-container">
-                            <div class="row" id="lista-citas">
-                                <div class="col-12 text-center" id="noCitasMessage" style="display: none;">
-                                    <div class="alert alert-info" role="alert">
-                                        No tienes citas programadas.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card-body">
+              <form id="form-cita">
+                <div class="mb-3">
+                  <label for="doctorSelect" class="form-label">Médico</label>
+                  <select class="form-select" id="doctorSelect" required>
+                    <option value="">Selecciona un médico</option>
+                  </select>
                 </div>
+                <div class="mb-3">
+                  <label for="especialidadInput" class="form-label"
+                    >Especialidad</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="especialidadInput"
+                    readonly
+                    disabled
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="fechaCita" class="form-label">Fecha y Hora</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fechaCita"
+                    placeholder="Selecciona la fecha y hora"
+                    required
+                  />
+                </div>
+                <div class="mb-3" id="diasTrabajoDisplay" style="display: none">
+                  <label class="form-label">Días de Atención:</label>
+                  <span
+                    class="form-control-plaintext"
+                    id="diasTrabajoTexto"
+                  ></span>
+                </div>
+
+                <button type="submit" class="btn btn-purple w-100">
+                  <i class="fas fa-plus-circle me-2"></i>Agendar Cita
+                </button>
+                <div id="agendarMensaje" class="mt-3 text-center fw-bold"></div>
+              </form>
             </div>
+          </div>
         </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm h-100 card-cita">
+            <div class="card-header">
+              <i class="fas fa-list-alt me-2"></i>Mis Citas Agendadas
+            </div>
+            <div class="card-body">
+              <div id="lista-citas-container">
+                <div class="row" id="lista-citas">
+                  <div
+                    class="col-12 text-center"
+                    id="noCitasMessage"
+                    style="display: none"
+                  >
+                    <div class="alert alert-info" role="alert">
+                      No tienes citas programadas.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
-        <footer class="bg-dark-purple text-white py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="mb-4">
-                        <i class="fas fa-heartbeat me-2"></i> Consulta Médica
-                    </h5>
-                    <p class="text-purple-light">Tu salud es nuestra prioridad. Ofrecemos atención médica profesional en línea con los más altos estándares de calidad.</p>
+    <footer class="bg-dark-purple text-white py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h5 class="mb-4">
+              <i class="fas fa-heartbeat me-2"></i> Consulta Médica
+            </h5>
+            <p class="text-purple-light">
+              Tu salud es nuestra prioridad. Ofrecemos atención médica
+              profesional en línea con los más altos estándares de calidad.
+            </p>
 
-                    <div class="d-flex gap-3 mt-4">
-                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h6 class="mb-4">Servicios</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-purple-light">Consulta General</a></li>
-                        <li class="mb-2"><a href="#" class="text-purple-light">Cardiología</a></li>
-                        <li class="mb-2"><a href="#" class="text-purple-light">Psicología</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 col-md-4">
-                    <h6 class="mb-4">Suscríbete a nuestro boletín</h6>
-                    <p class="text-purple-light mb-4">Recibe las últimas noticias y promociones en tu correo.</p>
-
-                    <form class="mb-3">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Tu correo electrónico">
-                            <button class="btn btn-purple" type="submit">Suscribirse</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="d-flex gap-3 mt-4">
+              <a href="#" class="text-white"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
             </div>
+          </div>
 
-            <hr class="my-5 border-purple">
+          <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+            <h6 class="mb-4">Servicios</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Consulta General</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Cardiología</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Psicología</a>
+              </li>
+            </ul>
+          </div>
 
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-purple-light">© 2025 Consulta Médica Online. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#" class="text-purple-light">Términos y condiciones</a></li>
-                        <li class="list-inline-item"><span class="text-purple-light mx-2">|</span></li>
-                        <li class="list-inline-item"><a href="#" class="text-purple-light">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
+          <div class="col-lg-4 col-md-4">
+            <h6 class="mb-4">Suscríbete a nuestro boletín</h6>
+            <p class="text-purple-light mb-4">
+              Recibe las últimas noticias y promociones en tu correo.
+            </p>
+
+            <form class="mb-3">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Tu correo electrónico"
+                />
+                <button class="btn btn-purple" type="submit">
+                  Suscribirse
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+
+        <hr class="my-5 border-purple" />
+
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0 text-purple-light">
+              © 2025 Consulta Médica Online. Todos los derechos reservados.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <a href="#" class="text-purple-light">Términos y condiciones</a>
+              </li>
+              <li class="list-inline-item">
+                <span class="text-purple-light mx-2">|</span>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="text-purple-light">Política de privacidad</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <div class="whatsapp-float">
-        <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-link">
-            <div class="whatsapp-icon">
-                <i class="fab fa-whatsapp"></i>
-            </div>
-            <span class="whatsapp-text">¿Necesitas ayuda?</span>
-        </a>
+      <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-link">
+        <div class="whatsapp-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <span class="whatsapp-text">¿Necesitas ayuda?</span>
+      </a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const pacienteId = localStorage.getItem('pacienteId');
-            if (!pacienteId) {
-                alert("Debes iniciar sesión para gestionar tus citas.");
-                window.location.href = 'login.html';
-                return;
+      document.addEventListener("DOMContentLoaded", function () {
+        const pacienteId = localStorage.getItem("pacienteId");
+        if (!pacienteId) {
+          alert("Debes iniciar sesión para gestionar tus citas.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        document
+          .getElementById("logoutBtn")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("pacienteId");
+            localStorage.removeItem("pacienteNombre");
+            window.location.href = "index.html";
+          });
+
+        const doctorSelect = document.getElementById("doctorSelect");
+        const especialidadInput = document.getElementById("especialidadInput");
+        const fechaCitaInput = document.getElementById("fechaCita");
+        const formCita = document.getElementById("form-cita");
+        const agendarMensaje = document.getElementById("agendarMensaje");
+        const listaCitas = document.getElementById("lista-citas");
+        const noCitasMessage = document.getElementById("noCitasMessage");
+        const diasTrabajoDisplay =
+          document.getElementById("diasTrabajoDisplay");
+        const diasTrabajoTexto = document.getElementById("diasTrabajoTexto");
+
+        let allDoctors = []; // Para almacenar los médicos disponibles
+        let datePickerInstance = null; // Para la instancia de Flatpickr
+        let selectedDoctorWorkDays = []; // Para almacenar los días hábiles del doctor (0=domingo, 1=lunes...)
+        const mapDia = { D: 0, L: 1, M: 2, X: 3, J: 4, V: 5, S: 6 }; // Mapeo de caracteres a números de día de la semana
+
+        // Función para inicializar/actualizar Flatpickr
+        // Ahora acepta un horarioDeTrabajo (ej: "9:00-17:00")
+        function setupFlatpickr(disabledDays, horarioDeTrabajo = null) {
+          if (datePickerInstance) {
+            datePickerInstance.destroy(); // Destruir la instancia anterior si existe
+          }
+
+          let minTime = null;
+          let maxTime = null;
+
+          if (horarioDeTrabajo) {
+            // Buscar el patrón de hora-hora (ej: 9:00-17:00)
+            const timeRangeMatch = horarioDeTrabajo.match(
+              /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/
+            );
+            if (timeRangeMatch && timeRangeMatch.length >= 3) {
+              minTime = timeRangeMatch[1]; // ej: "09:00"
+              maxTime = timeRangeMatch[2]; // ej: "17:00"
             }
+          }
 
-            document.getElementById('logoutBtn').addEventListener('click', function (e) {
-                e.preventDefault();
-                localStorage.removeItem('pacienteId');
-                localStorage.removeItem('pacienteNombre');
-                window.location.href = 'index.html';
-            });
+          datePickerInstance = flatpickr("#fechaCita", {
+            enableTime: true,
+            noCalendar: false,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            minuteIncrement: 30, // Intervalos de 30 minutos
 
-            const doctorSelect = document.getElementById('doctorSelect');
-            const especialidadInput = document.getElementById('especialidadInput');
-            const fechaCitaInput = document.getElementById('fechaCita');
-            const formCita = document.getElementById('form-cita');
-            const agendarMensaje = document.getElementById('agendarMensaje');
-            const listaCitas = document.getElementById('lista-citas');
-            const noCitasMessage = document.getElementById('noCitasMessage');
-            const diasTrabajoDisplay = document.getElementById('diasTrabajoDisplay');
-            const diasTrabajoTexto = document.getElementById('diasTrabajoTexto');
+            // Configurar minTime y maxTime
+            minTime: minTime,
+            maxTime: maxTime,
 
-
-            let allDoctors = []; // Para almacenar los médicos disponibles
-            let datePickerInstance = null; // Para la instancia de Flatpickr
-            let selectedDoctorWorkDays = []; // Para almacenar los días hábiles del doctor (0=domingo, 1=lunes...)
-            const mapDia = { 'D': 0, 'L': 1, 'M': 2, 'X': 3, 'J': 4, 'V': 5, 'S': 6 }; // Mapeo de caracteres a números de día de la semana
-
-
-            // Función para inicializar/actualizar Flatpickr
-            // Ahora acepta un horarioDeTrabajo (ej: "9:00-17:00")
-            function setupFlatpickr(disabledDays, horarioDeTrabajo = null) {
-                if (datePickerInstance) {
-                    datePickerInstance.destroy(); // Destruir la instancia anterior si existe
-                }
-
-                let minTime = null;
-                let maxTime = null;
-
-                if (horarioDeTrabajo) {
-                    // Buscar el patrón de hora-hora (ej: 9:00-17:00)
-                    const timeRangeMatch = horarioDeTrabajo.match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
-                    if (timeRangeMatch && timeRangeMatch.length >= 3) {
-                        minTime = timeRangeMatch[1]; // ej: "09:00"
-                        maxTime = timeRangeMatch[2]; // ej: "17:00"
-                    }
-                }
-                
-                datePickerInstance = flatpickr("#fechaCita", {
-                    enableTime: true,
-                    noCalendar: false,
-                    dateFormat: "Y-m-d H:i",
-                    minDate: "today",
-                    minuteIncrement: 30, // Intervalos de 30 minutos
-
-                    // Configurar minTime y maxTime
-                    minTime: minTime,
-                    maxTime: maxTime,
-
-                    disable: [
-                        function(date) {
-                            return disabledDays.length > 0 && !disabledDays.includes(date.getDay());
-                        }
-                    ],
-                    onClose: function(selectedDates, dateStr, instance) {
-                        if (selectedDates.length > 0) {
-                            const selectedDate = selectedDates[0];
-                            const dayOfWeek = selectedDate.getDay();
-                            if (selectedDoctorWorkDays.length > 0 && !selectedDoctorWorkDays.includes(dayOfWeek)) {
-                                agendarMensaje.innerText = "❌ Este doctor no trabaja el día seleccionado. Por favor, elige un día hábil.";
-                                agendarMensaje.className = "text-danger mt-3";
-                                fechaCitaInput.value = '';
-                            } else {
-                                agendarMensaje.innerText = "";
-                                agendarMensaje.className = "";
-                            }
-                        }
-                    }
-                });
-            }
-
-
-            // Cargar médicos para el select
-            async function loadDoctors() {
-                try {
-                    const res = await fetch('http://localhost:3000/doctors');
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    allDoctors = await res.json();
-                    doctorSelect.innerHTML = '<option value="">Selecciona un médico</option>';
-                    allDoctors.forEach(doctor => {
-                        const option = document.createElement('option');
-                        option.value = doctor.id;
-                        option.textContent = `${doctor.nombre} (${doctor.especialidad})`;
-                        doctorSelect.appendChild(option);
-                    });
-
-                    // Si se seleccionó un médico de medicos.html
-                    const doctorSeleccionado = JSON.parse(localStorage.getItem('doctorSeleccionado'));
-                    if (doctorSeleccionado && doctorSeleccionado.id) {
-                        doctorSelect.value = doctorSeleccionado.id;
-                        // Forzamos el cambio para que se actualice la especialidad y Flatpickr
-                        doctorSelect.dispatchEvent(new Event('change'));
-                        localStorage.removeItem('doctorSeleccionado'); // Limpiar después de usar
-                    }
-
-                } catch (error) {
-                    console.error("Error al cargar médicos:", error);
-                    agendarMensaje.innerText = "❌ Error al cargar la lista de médicos.";
-                    agendarMensaje.className = "text-danger mt-3";
-                }
-            }
-
-            // Actualizar especialidad Y días de trabajo al seleccionar un doctor
-            doctorSelect.addEventListener('change', function () {
-                const selectedDoctorId = this.value;
-                const selectedDoctor = allDoctors.find(doc => doc.id == selectedDoctorId);
-                especialidadInput.value = selectedDoctor ? selectedDoctor.especialidad : '';
-
-                selectedDoctorWorkDays = []; // Resetear los días
-                diasTrabajoDisplay.style.display = 'none'; // Ocultar por defecto
-                diasTrabajoTexto.textContent = ''; // Limpiar texto
-
-                let doctorHorario = null; // Para pasar el horario completo a Flatpickr
-
-                if (selectedDoctor && selectedDoctor.horario) {
-                    doctorHorario = selectedDoctor.horario; // Asignar el horario completo
-
-                    // Extraer los días (ej: "L-V", "M-J") del inicio del string horario
-                    const diasMatch = selectedDoctor.horario.match(/^([A-Z-]+)\s/);
-                    if (diasMatch && diasMatch[1]) {
-                        const diasTextoFull = diasMatch[1]; // Ej: "L-V" o "M-J"
-                        let formattedDias = "";
-
-                        if (diasTextoFull.includes('-')) {
-                            const [startChar, endChar] = diasTextoFull.split('-');
-                            let startIndex = mapDia[startChar];
-                            let endIndex = mapDia[endChar];
-
-                            if (startIndex > endIndex) {
-                                endIndex += 7; // Ajustar para que el bucle funcione correctamente
-                            }
-                            const tempDays = [];
-                            for (let i = startIndex; i <= endIndex; i++) {
-                                selectedDoctorWorkDays.push(i % 7); // Módulo 7 para días de la semana
-                                // Para mostrar en texto
-                                const dayName = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][i % 7];
-                                tempDays.push(dayName);
-                            }
-                            formattedDias = tempDays.join(', ');
-                        } else {
-                            // Si es un solo día o una lista de días (ej. "LMX")
-                            const tempDays = [];
-                            for (const char of diasTextoFull) {
-                                if (mapDia[char] !== undefined) {
-                                    selectedDoctorWorkDays.push(mapDia[char]);
-                                    const dayName = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][mapDia[char]];
-                                    tempDays.push(dayName);
-                                }
-                            }
-                            formattedDias = tempDays.join(', ');
-                        }
-
-                        if (formattedDias) {
-                             diasTrabajoTexto.textContent = formattedDias;
-                             diasTrabajoDisplay.style.display = 'block';
-                        }
-                    }
+            disable: [
+              function (date) {
+                return (
+                  disabledDays.length > 0 &&
+                  !disabledDays.includes(date.getDay())
+                );
+              },
+            ],
+            onClose: function (selectedDates, dateStr, instance) {
+              if (selectedDates.length > 0) {
+                const selectedDate = selectedDates[0];
+                const dayOfWeek = selectedDate.getDay();
+                if (
+                  selectedDoctorWorkDays.length > 0 &&
+                  !selectedDoctorWorkDays.includes(dayOfWeek)
+                ) {
+                  agendarMensaje.innerText =
+                    "❌ Este doctor no trabaja el día seleccionado. Por favor, elige un día hábil.";
+                  agendarMensaje.className = "text-danger mt-3";
+                  fechaCitaInput.value = "";
                 } else {
-                    // Si no hay doctor seleccionado, no hay horario de trabajo
-                    doctorHorario = null;
+                  agendarMensaje.innerText = "";
+                  agendarMensaje.className = "";
                 }
-                console.log("Días de trabajo del doctor (números):", selectedDoctorWorkDays); // Para depuración
+              }
+            },
+          });
+        }
 
-                // Actualizar Flatpickr con los días deshabilitados Y el horario
-                setupFlatpickr(selectedDoctorWorkDays, doctorHorario);
+        // Cargar médicos para el select
+        async function loadDoctors() {
+          try {
+            const res = await fetch("http://localhost:3000/doctors");
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            allDoctors = await res.json();
+            doctorSelect.innerHTML =
+              '<option value="">Selecciona un médico</option>';
+            allDoctors.forEach((doctor) => {
+              const option = document.createElement("option");
+              option.value = doctor.id;
+              option.textContent = `${doctor.nombre} (${doctor.especialidad})`;
+              doctorSelect.appendChild(option);
             });
 
+            // Si se seleccionó un médico de medicos.html
+            const doctorSeleccionado = JSON.parse(
+              localStorage.getItem("doctorSeleccionado")
+            );
+            if (doctorSeleccionado && doctorSeleccionado.id) {
+              doctorSelect.value = doctorSeleccionado.id;
+              // Forzamos el cambio para que se actualice la especialidad y Flatpickr
+              doctorSelect.dispatchEvent(new Event("change"));
+              localStorage.removeItem("doctorSeleccionado"); // Limpiar después de usar
+            }
+          } catch (error) {
+            console.error("Error al cargar médicos:", error);
+            agendarMensaje.innerText =
+              "❌ Error al cargar la lista de médicos.";
+            agendarMensaje.className = "text-danger mt-3";
+          }
+        }
 
-            // Agendar nueva cita
-            formCita.addEventListener('submit', async function (e) {
-                e.preventDefault();
+        // Actualizar especialidad Y días de trabajo al seleccionar un doctor
+        doctorSelect.addEventListener("change", function () {
+          const selectedDoctorId = this.value;
+          const selectedDoctor = allDoctors.find(
+            (doc) => doc.id == selectedDoctorId
+          );
+          especialidadInput.value = selectedDoctor
+            ? selectedDoctor.especialidad
+            : "";
 
-                const selectedDoctorId = doctorSelect.value;
-                if (!selectedDoctorId) {
-                    agendarMensaje.innerText = "❌ Por favor, selecciona un médico.";
-                    agendarMensaje.className = "text-danger mt-3";
-                    return;
+          selectedDoctorWorkDays = []; // Resetear los días
+          diasTrabajoDisplay.style.display = "none"; // Ocultar por defecto
+          diasTrabajoTexto.textContent = ""; // Limpiar texto
+
+          let doctorHorario = null; // Para pasar el horario completo a Flatpickr
+
+          if (selectedDoctor && selectedDoctor.horario) {
+            doctorHorario = selectedDoctor.horario; // Asignar el horario completo
+
+            // Extraer los días (ej: "L-V", "M-J") del inicio del string horario
+            const diasMatch = selectedDoctor.horario.match(/^([A-Z-]+)\s/);
+            if (diasMatch && diasMatch[1]) {
+              const diasTextoFull = diasMatch[1]; // Ej: "L-V" o "M-J"
+              let formattedDias = "";
+
+              if (diasTextoFull.includes("-")) {
+                const [startChar, endChar] = diasTextoFull.split("-");
+                let startIndex = mapDia[startChar];
+                let endIndex = mapDia[endChar];
+
+                if (startIndex > endIndex) {
+                  endIndex += 7; // Ajustar para que el bucle funcione correctamente
                 }
-
-                const selectedDoctor = allDoctors.find(doc => doc.id == selectedDoctorId);
-                const fullDateTime = fechaCitaInput.value; // Obtener el valor completo de Flatpickr
-
-                if (!fullDateTime) {
-                    agendarMensaje.innerText = "❌ Por favor, selecciona una fecha y hora para la cita.";
-                    agendarMensaje.className = "text-danger mt-3";
-                    return;
+                const tempDays = [];
+                for (let i = startIndex; i <= endIndex; i++) {
+                  selectedDoctorWorkDays.push(i % 7); // Módulo 7 para días de la semana
+                  // Para mostrar en texto
+                  const dayName = [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mié",
+                    "Jue",
+                    "Vie",
+                    "Sáb",
+                  ][i % 7];
+                  tempDays.push(dayName);
                 }
-
-                // Separar fecha y hora
-                const [fechaParte, horaParte] = fullDateTime.split(' ');
-
-                const nuevaCita = {
-                    pacienteId: parseInt(pacienteId),
-                    doctorId: parseInt(selectedDoctorId),
-                    fecha: fechaParte,
-                    hora: horaParte,
-                    especialidad: selectedDoctor.especialidad,
-                    medico: selectedDoctor.nombre // Nombre del doctor para referencia en el frontend
-                };
-
-                try {
-                    const res = await fetch('http://localhost:3000/appointments', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(nuevaCita)
-                    });
-
-                    const data = await res.json();
-
-                    if (res.ok) {
-                        agendarMensaje.innerText = "✅ Cita agendada con éxito.";
-                        agendarMensaje.className = "text-success mt-3";
-                        formCita.reset();
-                        especialidadInput.value = ''; // Limpiar especialidad
-                        diasTrabajoDisplay.style.display = 'none'; // Ocultar días de trabajo
-                        diasTrabajoTexto.textContent = ''; // Limpiar texto de días
-                        if (datePickerInstance) {
-                            datePickerInstance.clear(); // Limpiar la fecha seleccionada en Flatpickr
-                            setupFlatpickr([]); // Resetear Flatpickr sin días deshabilitados
-                        }
-                        fetchCitas(); // Recargar la lista de citas
-                    } else {
-                        agendarMensaje.innerText = `❌ ${data.error || "Error al agendar la cita."}`;
-                        agendarMensaje.className = "text-danger mt-3";
-                    }
-                } catch (err) {
-                    console.error("Error de conexión al agendar cita:", err);
-                    agendarMensaje.innerText = "❌ Error de conexión. Inténtalo de nuevo.";
-                    agendarMensaje.className = "text-danger mt-3";
+                formattedDias = tempDays.join(", ");
+              } else {
+                // Si es un solo día o una lista de días (ej. "LMX")
+                const tempDays = [];
+                for (const char of diasTextoFull) {
+                  if (mapDia[char] !== undefined) {
+                    selectedDoctorWorkDays.push(mapDia[char]);
+                    const dayName = [
+                      "Dom",
+                      "Lun",
+                      "Mar",
+                      "Mié",
+                      "Jue",
+                      "Vie",
+                      "Sáb",
+                    ][mapDia[char]];
+                    tempDays.push(dayName);
+                  }
                 }
+                formattedDias = tempDays.join(", ");
+              }
+
+              if (formattedDias) {
+                diasTrabajoTexto.textContent = formattedDias;
+                diasTrabajoDisplay.style.display = "block";
+              }
+            }
+          } else {
+            // Si no hay doctor seleccionado, no hay horario de trabajo
+            doctorHorario = null;
+          }
+          console.log(
+            "Días de trabajo del doctor (números):",
+            selectedDoctorWorkDays
+          ); // Para depuración
+
+          // Actualizar Flatpickr con los días deshabilitados Y el horario
+          setupFlatpickr(selectedDoctorWorkDays, doctorHorario);
+        });
+
+        // Agendar nueva cita
+        formCita.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const selectedDoctorId = doctorSelect.value;
+          if (!selectedDoctorId) {
+            agendarMensaje.innerText = "❌ Por favor, selecciona un médico.";
+            agendarMensaje.className = "text-danger mt-3";
+            return;
+          }
+
+          const selectedDoctor = allDoctors.find(
+            (doc) => doc.id == selectedDoctorId
+          );
+          const fullDateTime = fechaCitaInput.value; // Obtener el valor completo de Flatpickr
+          const selectedDateTime = new Date(fullDateTime);
+          const now = new Date();
+
+          if (selectedDateTime < now) {
+            agendarMensaje.innerText =
+              "❌ No puedes agendar citas en el pasado.";
+            agendarMensaje.className = "text-danger mt-3";
+            return;
+          }
+          if (!fullDateTime) {
+            agendarMensaje.innerText =
+              "❌ Por favor, selecciona una fecha y hora para la cita.";
+            agendarMensaje.className = "text-danger mt-3";
+            return;
+          }
+
+          // Separar fecha y hora
+          const [fechaParte, horaParte] = fullDateTime.split(" ");
+
+          const nuevaCita = {
+            pacienteId: parseInt(pacienteId),
+            doctorId: parseInt(selectedDoctorId),
+            fecha: fechaParte,
+            hora: horaParte,
+            especialidad: selectedDoctor.especialidad,
+            medico: selectedDoctor.nombre, // Nombre del doctor para referencia en el frontend
+          };
+
+          try {
+            const res = await fetch("http://localhost:3000/appointments", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(nuevaCita),
             });
 
-            // Cargar y mostrar citas del paciente
-            async function fetchCitas() {
-                listaCitas.innerHTML = ''; // Limpiar citas existentes
-                noCitasMessage.style.display = 'none';
+            const data = await res.json();
 
-                try {
-                    const res = await fetch(`http://localhost:3000/appointments?pacienteId=${pacienteId}`);
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    const citas = await res.json();
+            if (res.ok) {
+              agendarMensaje.innerText = "✅ Cita agendada con éxito.";
+              agendarMensaje.className = "text-success mt-3";
+              formCita.reset();
+              especialidadInput.value = ""; // Limpiar especialidad
+              diasTrabajoDisplay.style.display = "none"; // Ocultar días de trabajo
+              diasTrabajoTexto.textContent = ""; // Limpiar texto de días
+              if (datePickerInstance) {
+                datePickerInstance.clear(); // Limpiar la fecha seleccionada en Flatpickr
+                setupFlatpickr([]); // Resetear Flatpickr sin días deshabilitados
+              }
+              fetchCitas(); // Recargar la lista de citas
+            } else {
+              agendarMensaje.innerText = `❌ ${
+                data.error || "Error al agendar la cita."
+              }`;
+              agendarMensaje.className = "text-danger mt-3";
+            }
+          } catch (err) {
+            console.error("Error de conexión al agendar cita:", err);
+            agendarMensaje.innerText =
+              "❌ Error de conexión. Inténtalo de nuevo.";
+            agendarMensaje.className = "text-danger mt-3";
+          }
+        });
 
-                    if (citas.length === 0) {
-                        noCitasMessage.style.display = 'block';
-                    } else {
-                        noCitasMessage.style.display = 'none';
-                        citas.forEach(cita => {
-                            // FIX para el problema de un día antes:
-                            // Parsar la fecha como fecha local para evitar problemas de zona horaria
-                            const [year, month, day] = cita.fecha.split('-').map(Number);
-                            const displayDate = new Date(year, month - 1, day); // month - 1 porque los meses en JS son 0-indexados
+        // Cargar y mostrar citas del paciente
+        async function fetchCitas() {
+          listaCitas.innerHTML = ""; // Limpiar citas existentes
+          noCitasMessage.style.display = "none";
 
-                            const formattedDate = displayDate.toLocaleDateString('es-ES', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
-                            
-                            // Usar encadenamiento opcional para acceder a Doctor
-                            let diasAtencion = "N/A";
-                            if (cita.Doctor?.horario) { // Usar ?. aquí
-                                const horarioString = cita.Doctor.horario;
-                                const diasMatch = horarioString.match(/^([A-Z-]+)\s/);
-                                if (diasMatch && diasMatch[1]) {
-                                    diasAtencion = diasMatch[1].replace(/-/g, ' a ');
-                                }
-                            }
+          try {
+            const res = await fetch(
+              `http://localhost:3000/appointments?pacienteId=${pacienteId}`
+            );
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const citas = await res.json();
 
-                            const citaCard = `
+            if (citas.length === 0) {
+              noCitasMessage.style.display = "block";
+            } else {
+              noCitasMessage.style.display = "none";
+              citas.forEach((cita) => {
+                // FIX para el problema de un día antes:
+                // Parsar la fecha como fecha local para evitar problemas de zona horaria
+                const [year, month, day] = cita.fecha.split("-").map(Number);
+                const displayDate = new Date(year, month - 1, day); // month - 1 porque los meses en JS son 0-indexados
+
+                const formattedDate = displayDate.toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+
+                // Usar encadenamiento opcional para acceder a Doctor
+                let diasAtencion = "N/A";
+                if (cita.Doctor?.horario) {
+                  // Usar ?. aquí
+                  const horarioString = cita.Doctor.horario;
+                  const diasMatch = horarioString.match(/^([A-Z-]+)\s/);
+                  if (diasMatch && diasMatch[1]) {
+                    diasAtencion = diasMatch[1].replace(/-/g, " a ");
+                  }
+                }
+
+                const citaCard = `
                                 <div class="col-md-12 mb-3">
-                                    <div class="card shadow-sm card-cita" id="cita-card-${cita.id}">
+                                    <div class="card shadow-sm card-cita" id="cita-card-${
+                                      cita.id
+                                    }">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <span>Cita con ${cita.Doctor?.nombre || cita.medico}</span>
+                                            <span>Cita con ${
+                                              cita.Doctor?.nombre || cita.medico
+                                            }</span>
                                             <div class="d-flex gap-2">
-                                                <button class="btn btn-sm btn-info btn-download-pdf" data-id="${cita.id}">
+                                                <button class="btn btn-sm btn-info btn-download-pdf" data-id="${
+                                                  cita.id
+                                                }">
                                                     <i class="fas fa-file-pdf me-1"></i>Descargar PDF
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-light btn-cancelar" data-id="${cita.id}">
+                                                <button class="btn btn-sm btn-outline-light btn-cancelar" data-id="${
+                                                  cita.id
+                                                }">
                                                     <i class="fas fa-times-circle me-1"></i>Cancelar
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <p><i class="fas fa-user-md"></i> Médico: <strong>${cita.Doctor?.nombre || cita.medico}</strong></p>
-                                            <p><i class="fas fa-stethoscope"></i> Especialidad: <strong>${cita.Doctor?.especialidad || cita.especialidad}</strong></p>
+                                            <p><i class="fas fa-user-md"></i> Médico: <strong>${
+                                              cita.Doctor?.nombre || cita.medico
+                                            }</strong></p>
+                                            <p><i class="fas fa-stethoscope"></i> Especialidad: <strong>${
+                                              cita.Doctor?.especialidad ||
+                                              cita.especialidad
+                                            }</strong></p>
                                             <p><i class="fas fa-calendar-alt"></i> Fecha: <strong>${formattedDate}</strong></p>
-                                            <p><i class="fas fa-clock"></i> Hora: <strong>${cita.hora || 'Hora no especificada'}</strong></p>
+                                            <p><i class="fas fa-clock"></i> Hora: <strong>${
+                                              cita.hora ||
+                                              "Hora no especificada"
+                                            }</strong></p>
                                             <p><i class="fas fa-calendar-week"></i> Días de atención del médico: <strong>${diasAtencion}</strong></p>
                                         </div>
                                     </div>
                                 </div>
                             `;
-                            listaCitas.insertAdjacentHTML('beforeend', citaCard);
-                        });
+                listaCitas.insertAdjacentHTML("beforeend", citaCard);
+              });
 
-                        // Asignar listeners a los botones de cancelar
-                        document.querySelectorAll('.btn-cancelar').forEach(button => {
-                            button.addEventListener('click', async function () {
-                                const citaId = this.dataset.id;
-                                if (confirm('¿Estás seguro de que quieres cancelar esta cita?')) {
-                                    try {
-                                        const res = await fetch(`http://localhost:3000/appointments/${citaId}`, {
-                                            method: 'DELETE'
-                                        });
+              // Asignar listeners a los botones de cancelar
+              document.querySelectorAll(".btn-cancelar").forEach((button) => {
+                button.addEventListener("click", async function () {
+                  const citaId = this.dataset.id;
+                  if (
+                    confirm("¿Estás seguro de que quieres cancelar esta cita?")
+                  ) {
+                    try {
+                      const res = await fetch(
+                        `http://localhost:3000/appointments/${citaId}`,
+                        {
+                          method: "DELETE",
+                        }
+                      );
 
-                                        if (res.ok) {
-                                            alert('Cita cancelada con éxito.');
-                                            fetchCitas(); // Recargar la lista
-                                        } else {
-                                            const errorData = await res.json();
-                                            alert(`Error al cancelar cita: ${errorData.error || res.statusText}`);
-                                        }
-                                    } catch (err) {
-                                        console.error("Error de conexión al cancelar cita:", err);
-                                        alert("Error de conexión. Inténtalo de nuevo.");
-                                    }
-                                }
-                            });
-                        });
-
-                        // Asignar listeners a los botones de descarga de PDF
-                        document.querySelectorAll('.btn-download-pdf').forEach(button => {
-                            button.addEventListener('click', function () {
-                                const citaId = this.dataset.id;
-                                const citaCardFull = document.getElementById(`cita-card-${citaId}`); 
-
-                                if (citaCardFull) {
-                                    const medico = citaCardFull.querySelector('p:nth-child(1) strong').textContent;
-                                    const especialidad = citaCardFull.querySelector('p:nth-child(2) strong').textContent;
-                                    const fecha = citaCardFull.querySelector('p:nth-child(3) strong').textContent;
-                                    const hora = citaCardFull.querySelector('p:nth-child(4) strong').textContent;
-                                    const diasAtencionMedico = citaCardFull.querySelector('p:nth-child(5) strong').textContent;
-
-                                    // Crear una nueva instancia de jsPDF
-                                    const doc = new window.jspdf.jsPDF(); 
-
-                                    // Colores del CSS
-                                    const purplePrimary = '#6a0dad';
-                                    const purpleDark = '#4b0082';
-                                    const white = '#FFFFFF';
-
-                                    let yPos = 20; // Posición Y inicial
-                                    const marginX = 20; // Margen lateral
-
-                                    // **Encabezado Profesional**
-                                    doc.setFillColor(purpleDark);
-                                    doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
-                                    doc.setFontSize(20);
-                                    doc.setTextColor(white);
-                                    doc.setFont('helvetica', 'bold'); // Fuente en negrita para el encabezado
-                                    doc.text("Consulta Médica Online", marginX, 25);
-
-                                    // Línea divisoria debajo del encabezado
-                                    doc.setDrawColor(purplePrimary);
-                                    doc.setLineWidth(0.5);
-                                    doc.line(marginX, 45, doc.internal.pageSize.width - marginX, 45);
-                                    yPos = 55;
-
-                                    // Título Principal
-                                    doc.setFontSize(22);
-                                    doc.setTextColor(purplePrimary);
-                                    doc.setFont('helvetica', 'bold');
-                                    doc.text("Detalles de la Cita Médica", doc.internal.pageSize.width / 2, yPos, { align: 'center' });
-                                    yPos += 15;
-
-                                    doc.setFontSize(14);
-                                    doc.setTextColor(purpleDark);
-                                    doc.setFont('helvetica', 'normal'); // Volver a fuente normal para los detalles
-                                    const lineHeight = 7; // Espaciado entre líneas
-
-                                    doc.text(`Médico: ${medico}`, marginX, yPos);
-                                    yPos += lineHeight * 2; // Aumentar un poco el espacio
-
-                                    doc.text(`Especialidad: ${especialidad}`, marginX, yPos);
-                                    yPos += lineHeight * 2;
-
-                                    doc.text(`Fecha: ${fecha}`, marginX, yPos);
-                                    yPos += lineHeight * 2;
-
-                                    doc.text(`Hora: ${hora}`, marginX, yPos);
-                                    yPos += lineHeight * 2;
-
-                                    doc.text(`Días de atención del médico: ${diasAtencionMedico}`, marginX, yPos);
-                                    yPos += lineHeight * 2;
-
-                                    // **Nota al Pie de Página**
-                                    const footerY = doc.internal.pageSize.height - 20;
-                                    doc.setDrawColor(purplePrimary);
-                                    doc.setLineWidth(0.5);
-                                    doc.line(marginX, footerY - 10, doc.internal.pageSize.width - marginX, footerY - 10);
-
-                                    doc.setFontSize(10);
-                                    doc.setTextColor(purpleDark);
-                                    doc.text("Este documento es una confirmación de su cita.", doc.internal.pageSize.width / 2, footerY, { align: 'center' });
-
-
-                                    // Guardar el PDF
-                                    doc.save(`Cita_Confirmacion_${citaId}.pdf`);
-                                } else {
-                                    alert('No se pudo encontrar la información de la cita para generar el PDF.');
-                                }
-                            });
-                        });
+                      if (res.ok) {
+                        alert("Cita cancelada con éxito.");
+                        fetchCitas(); // Recargar la lista
+                      } else {
+                        const errorData = await res.json();
+                        alert(
+                          `Error al cancelar cita: ${
+                            errorData.error || res.statusText
+                          }`
+                        );
+                      }
+                    } catch (err) {
+                      console.error("Error de conexión al cancelar cita:", err);
+                      alert("Error de conexión. Inténtalo de nuevo.");
                     }
-                } catch (error) {
-                    console.error("Error al cargar citas:", error);
-                    listaCitas.innerHTML = `<div class="col-12 text-center"><div class="alert alert-danger" role="alert">Error al cargar sus citas. Intente más tarde.</div></div>`;
-                }
+                  }
+                });
+              });
+
+              // Asignar listeners a los botones de descarga de PDF
+              document
+                .querySelectorAll(".btn-download-pdf")
+                .forEach((button) => {
+                  button.addEventListener("click", function () {
+                    const citaId = this.dataset.id;
+                    const citaCardFull = document.getElementById(
+                      `cita-card-${citaId}`
+                    );
+
+                    if (citaCardFull) {
+                      const medico = citaCardFull.querySelector(
+                        "p:nth-child(1) strong"
+                      ).textContent;
+                      const especialidad = citaCardFull.querySelector(
+                        "p:nth-child(2) strong"
+                      ).textContent;
+                      const fecha = citaCardFull.querySelector(
+                        "p:nth-child(3) strong"
+                      ).textContent;
+                      const hora = citaCardFull.querySelector(
+                        "p:nth-child(4) strong"
+                      ).textContent;
+                      const diasAtencionMedico = citaCardFull.querySelector(
+                        "p:nth-child(5) strong"
+                      ).textContent;
+
+                      // Crear una nueva instancia de jsPDF
+                      const doc = new window.jspdf.jsPDF();
+
+                      // Colores del CSS
+                      const purplePrimary = "#6a0dad";
+                      const purpleDark = "#4b0082";
+                      const white = "#FFFFFF";
+
+                      let yPos = 20; // Posición Y inicial
+                      const marginX = 20; // Margen lateral
+
+                      // **Encabezado Profesional**
+                      doc.setFillColor(purpleDark);
+                      doc.rect(0, 0, doc.internal.pageSize.width, 40, "F");
+                      doc.setFontSize(20);
+                      doc.setTextColor(white);
+                      doc.setFont("helvetica", "bold"); // Fuente en negrita para el encabezado
+                      doc.text("Consulta Médica Online", marginX, 25);
+
+                      // Línea divisoria debajo del encabezado
+                      doc.setDrawColor(purplePrimary);
+                      doc.setLineWidth(0.5);
+                      doc.line(
+                        marginX,
+                        45,
+                        doc.internal.pageSize.width - marginX,
+                        45
+                      );
+                      yPos = 55;
+
+                      // Título Principal
+                      doc.setFontSize(22);
+                      doc.setTextColor(purplePrimary);
+                      doc.setFont("helvetica", "bold");
+                      doc.text(
+                        "Detalles de la Cita Médica",
+                        doc.internal.pageSize.width / 2,
+                        yPos,
+                        { align: "center" }
+                      );
+                      yPos += 15;
+
+                      doc.setFontSize(14);
+                      doc.setTextColor(purpleDark);
+                      doc.setFont("helvetica", "normal"); // Volver a fuente normal para los detalles
+                      const lineHeight = 7; // Espaciado entre líneas
+
+                      doc.text(`Médico: ${medico}`, marginX, yPos);
+                      yPos += lineHeight * 2; // Aumentar un poco el espacio
+
+                      doc.text(`Especialidad: ${especialidad}`, marginX, yPos);
+                      yPos += lineHeight * 2;
+
+                      doc.text(`Fecha: ${fecha}`, marginX, yPos);
+                      yPos += lineHeight * 2;
+
+                      doc.text(`Hora: ${hora}`, marginX, yPos);
+                      yPos += lineHeight * 2;
+
+                      doc.text(
+                        `Días de atención del médico: ${diasAtencionMedico}`,
+                        marginX,
+                        yPos
+                      );
+                      yPos += lineHeight * 2;
+
+                      // **Nota al Pie de Página**
+                      const footerY = doc.internal.pageSize.height - 20;
+                      doc.setDrawColor(purplePrimary);
+                      doc.setLineWidth(0.5);
+                      doc.line(
+                        marginX,
+                        footerY - 10,
+                        doc.internal.pageSize.width - marginX,
+                        footerY - 10
+                      );
+
+                      doc.setFontSize(10);
+                      doc.setTextColor(purpleDark);
+                      doc.text(
+                        "Este documento es una confirmación de su cita.",
+                        doc.internal.pageSize.width / 2,
+                        footerY,
+                        { align: "center" }
+                      );
+
+                      // Guardar el PDF
+                      doc.save(`Cita_Confirmacion_${citaId}.pdf`);
+                    } else {
+                      alert(
+                        "No se pudo encontrar la información de la cita para generar el PDF."
+                      );
+                    }
+                  });
+                });
             }
+          } catch (error) {
+            console.error("Error al cargar citas:", error);
+            listaCitas.innerHTML = `<div class="col-12 text-center"><div class="alert alert-danger" role="alert">Error al cargar sus citas. Intente más tarde.</div></div>`;
+          }
+        }
 
-            // Inicializar Flatpickr al cargar la página (sin días deshabilitados ni horarios, por defecto)
-            setupFlatpickr([]);
+        // Inicializar Flatpickr al cargar la página (sin días deshabilitados ni horarios, por defecto)
+        setupFlatpickr([]);
 
-            // Cargar todo al inicio
-            loadDoctors();
-            fetchCitas();
-        });
+        // Cargar todo al inicio
+        loadDoctors();
+        fetchCitas();
+      });
     </script>
-</body>
-
+  </body>
 </html>
