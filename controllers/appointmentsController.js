@@ -58,4 +58,27 @@ const deleteAppointment = async (req, res) => {
   }
 };
 
-module.exports = { getAllAppointments, createAppointment, deleteAppointment };
+const updateAppointment = (req, res) => {
+  const id = parseInt(req.params.id);
+  const { fecha, doctorId, pacienteId } = req.body;
+
+  // Leer base de datos
+  const db = JSON.parse(fs.readFileSync(dbFile, 'utf8'));
+
+  const index = db.appointments.findIndex((cita) => cita.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Cita no encontrada' });
+  }
+
+  // Actualizar campos
+  if (fecha) db.appointments[index].fecha = fecha;
+  if (doctorId) db.appointments[index].doctorId = doctorId;
+  if (pacienteId) db.appointments[index].pacienteId = pacienteId;
+
+  // Guardar cambios
+  fs.writeFileSync(dbFile, JSON.stringify(db, null, 2));
+
+  res.json(db.appointments[index]);
+};
+
+module.exports = { getAllAppointments, createAppointment, deleteAppointment, updateAppointment };

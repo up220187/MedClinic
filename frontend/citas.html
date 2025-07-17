@@ -1,361 +1,692 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mis Citas - Consulta Médica</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="/css/paciente.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
-        .card-cita {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+      .card-cita {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
 
-        .card-cita .card-header {
-            background-color: #6f42c1;
-            color: white;
-            font-weight: bold;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
+      .card-cita .card-header {
+        background-color: #6f42c1;
+        color: white;
+        font-weight: bold;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
 
-        .card-cita .card-body p {
-            margin-bottom: 0.5rem;
-        }
+      .card-cita .card-body p {
+        margin-bottom: 0.5rem;
+      }
 
-        .card-cita .card-body i {
-            color: #6f42c1;
-            margin-right: 8px;
-        }
+      .card-cita .card-body i {
+        color: #6f42c1;
+        margin-right: 8px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-purple sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="homepage.html">
-                <i class="fas fa-heartbeat me-2"></i>
-                <span>Consulta Médica</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="homepage.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="medicos.html">Nuestros Médicos</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="citas.html">Mis Citas</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="logoutBtn">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="homepage.html">
+          <i class="fas fa-heartbeat me-2"></i>
+          <span>Consulta Médica</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="homepage.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="medicos.html">Nuestros Médicos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="citas.html">Mis Citas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <main class="container mt-5">
-        <h1 class="text-center text-purple mb-4">Gestión de Citas Médicas</h1>
+      <h1 class="text-center text-purple mb-4">Gestión de Citas Médicas</h1>
 
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100 card-cita">
-                    <div class="card-header">
-                        <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
-                    </div>
-                    <div class="card-body">
-                        <form id="form-cita">
-                            <div class="mb-3">
-                                <label for="doctorSelect" class="form-label">Médico</label>
-                                <select class="form-select" id="doctorSelect" required>
-                                    <option value="">Selecciona un médico</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="especialidadInput" class="form-label">Especialidad</label>
-                                <input type="text" class="form-control" id="especialidadInput" readonly disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="fechaInput" class="form-label">Fecha y Hora</label>
-                                <input type="datetime-local" class="form-control" id="fechaInput" required>
-                            </div>
-                            <button type="submit" class="btn btn-purple w-100">
-                                <i class="fas fa-plus-circle me-2"></i>Agendar Cita
-                            </button>
-                            <div id="agendarMensaje" class="mt-3 text-center fw-bold"></div>
-                        </form>
-                    </div>
-                </div>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm h-100 card-cita">
+            <div class="card-header">
+              <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
             </div>
-
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm h-100 card-cita">
-                    <div class="card-header">
-                        <i class="fas fa-list-alt me-2"></i>Mis Citas Agendadas
-                    </div>
-                    <div class="card-body">
-                        <div id="lista-citas-container">
-                            <div class="row" id="lista-citas">
-                                <div class="col-12 text-center" id="noCitasMessage" style="display: none;">
-                                    <div class="alert alert-info" role="alert">
-                                        No tienes citas programadas.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card-body">
+              <form id="form-cita">
+                <div class="mb-3">
+                  <label for="doctorSelect" class="form-label">Médico</label>
+                  <select class="form-select" id="doctorSelect" required>
+                    <option value="">Selecciona un médico</option>
+                  </select>
                 </div>
+                <div class="mb-3">
+                  <label for="especialidadInput" class="form-label"
+                    >Especialidad</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="especialidadInput"
+                    readonly
+                    disabled
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="fechaInput" class="form-label"
+                    >Fecha y Hora</label
+                  >
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="fechaInput"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-purple w-100">
+                  <i class="fas fa-plus-circle me-2"></i>Agendar Cita
+                </button>
+                <div id="agendarMensaje" class="mt-3 text-center fw-bold"></div>
+              </form>
             </div>
+          </div>
         </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm h-100 card-cita">
+            <div class="card-header">
+              <i class="fas fa-list-alt me-2"></i>Mis Citas Agendadas
+            </div>
+            <div class="card-body">
+              <div id="lista-citas-container">
+                <div class="row" id="lista-citas">
+                  <div
+                    class="col-12 text-center"
+                    id="noCitasMessage"
+                    style="display: none"
+                  >
+                    <div class="alert alert-info" role="alert">
+                      No tienes citas programadas.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
-        <footer class="bg-dark-purple text-white py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="mb-4">
-                        <i class="fas fa-heartbeat me-2"></i> Consulta Médica
-                    </h5>
-                    <p class="text-purple-light">Tu salud es nuestra prioridad. Ofrecemos atención médica profesional en línea con los más altos estándares de calidad.</p>
-                    
-                    <div class="d-flex gap-3 mt-4">
-                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                    <h6 class="mb-4">Servicios</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-purple-light">Consulta General</a></li>
-                        <li class="mb-2"><a href="#" class="text-purple-light">Cardiología</a></li>
-                        <li class="mb-2"><a href="#" class="text-purple-light">Psicología</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-4 col-md-4">
-                    <h6 class="mb-4">Suscríbete a nuestro boletín</h6>
-                    <p class="text-purple-light mb-4">Recibe las últimas noticias y promociones en tu correo.</p>
-                    
-                    <form class="mb-3">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Tu correo electrónico">
-                            <button class="btn btn-purple" type="submit">Suscribirse</button>
-                        </div>
-                    </form>
-                </div>
+    <footer class="bg-dark-purple text-white py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h5 class="mb-4">
+              <i class="fas fa-heartbeat me-2"></i> Consulta Médica
+            </h5>
+            <p class="text-purple-light">
+              Tu salud es nuestra prioridad. Ofrecemos atención médica
+              profesional en línea con los más altos estándares de calidad.
+            </p>
+
+            <div class="d-flex gap-3 mt-4">
+              <a href="#" class="text-white"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
             </div>
-            
-            <hr class="my-5 border-purple">
-            
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-purple-light">© 2025 Consulta Médica Online. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#" class="text-purple-light">Términos y condiciones</a></li>
-                        <li class="list-inline-item"><span class="text-purple-light mx-2">|</span></li>
-                        <li class="list-inline-item"><a href="#" class="text-purple-light">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+            <h6 class="mb-4">Servicios</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Consulta General</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Cardiología</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-purple-light">Psicología</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <h6 class="mb-4">Suscríbete a nuestro boletín</h6>
+            <p class="text-purple-light mb-4">
+              Recibe las últimas noticias y promociones en tu correo.
+            </p>
+
+            <form class="mb-3">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Tu correo electrónico"
+                />
+                <button class="btn btn-purple" type="submit">
+                  Suscribirse
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+
+        <hr class="my-5 border-purple" />
+
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0 text-purple-light">
+              © 2025 Consulta Médica Online. Todos los derechos reservados.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">
+                <a href="#" class="text-purple-light">Términos y condiciones</a>
+              </li>
+              <li class="list-inline-item">
+                <span class="text-purple-light mx-2">|</span>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="text-purple-light">Política de privacidad</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <div class="whatsapp-float">
-        <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-link">
-            <div class="whatsapp-icon">
-                <i class="fab fa-whatsapp"></i>
-            </div>
-            <span class="whatsapp-text">¿Necesitas ayuda?</span>
-        </a>
+      <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-link">
+        <div class="whatsapp-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <span class="whatsapp-text">¿Necesitas ayuda?</span>
+      </a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const pacienteId = localStorage.getItem('pacienteId');
-            const listaCitas = document.getElementById('lista-citas');
-            const doctorSelect = document.getElementById('doctorSelect');
-            const especialidadInput = document.getElementById('especialidadInput');
-            const fechaInput = document.getElementById('fechaInput');
-            let doctorsData = []; // Para almacenar los datos de los doctores
+      document.addEventListener("DOMContentLoaded", () => {
+        const pacienteId = localStorage.getItem("pacienteId");
+        const listaCitas = document.getElementById("lista-citas");
+        const doctorSelect = document.getElementById("doctorSelect");
+        const especialidadInput = document.getElementById("especialidadInput");
+        const fechaInput = document.getElementById("fechaInput");
+        let doctorsData = []; // Para almacenar los datos de los doctores
 
-            // Protección de ruta
-            if (!pacienteId) {
-                alert("Debes iniciar sesión para acceder a esta página.");
-                window.location.href = 'login.html'; // Redirige al login de paciente
-                return;
-            }
+        // Protección de ruta
+        if (!pacienteId) {
+          alert("Debes iniciar sesión para acceder a esta página.");
+          window.location.href = "login.html"; // Redirige al login de paciente
+          return;
+        }
 
-            // Manejar cierre de sesión
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                localStorage.removeItem('pacienteId');
-                window.location.href = 'index.html'; // Redirige a la página principal o login
-            });
-
-            // Cargar doctores para el select
-            async function loadDoctors() {
-                try {
-                    const res = await fetch('http://localhost:3000/doctors');
-                    doctorsData = await res.json();
-
-                    doctorSelect.innerHTML = '<option value="">Selecciona un doctor</option>';
-                    doctorsData.forEach(doctor => {
-                        const option = document.createElement('option');
-                        option.value = doctor.id;
-                        option.textContent = `${doctor.nombre} (${doctor.especialidad})`;
-                        doctorSelect.appendChild(option);
-                    });
-                } catch (error) {
-                    console.error("Error al cargar doctores:", error);
-                    alert("Error al cargar la lista de doctores.");
-                }
-            }
-
-            // Actualizar especialidad cuando se selecciona un doctor
-            doctorSelect.addEventListener('change', () => {
-                const selectedDoctorId = doctorSelect.value;
-                const selectedDoctor = doctorsData.find(doc => doc.id == selectedDoctorId);
-                especialidadInput.value = selectedDoctor ? selectedDoctor.especialidad : '';
-            });
-
-            // Función para cargar y mostrar las citas del paciente
-            async function fetchCitas() {
-                const pacienteId = localStorage.getItem('pacienteId');
-                if (!pacienteId) {
-                    listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-warning\" role=\"alert\">Por favor, inicia sesión para ver tus citas.</div></div>`;
-                    return;
-                }
-
-                try {
-                    // **CAMBIO CLAVE: Añadir el pacienteId a la URL como query parameter**
-                    const res = await fetch(`http://localhost:3000/appointments?pacienteId=${pacienteId}`);
-                    
-                    if (!res.ok) { // Si la respuesta HTTP no es exitosa (ej. 404, 500)
-                        const errorText = await res.text(); // Leer el cuerpo de la respuesta como texto
-                        throw new Error(`HTTP error! status: ${res.status}, body: ${errorText}`);
-                    }
-
-                    const citas = await res.json();
-
-                    listaCitas.innerHTML = ''; // Limpiar la lista antes de añadir nuevas citas
-
-                    if (citas.length === 0) {
-                        listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-info\" role=\"alert\">No tienes citas agendadas aún.</div></div>`;
-                        return;
-                    }
-
-                    citas.forEach(cita => {
-                        const cardHtml = `
-                            <div class="col-md-6 mb-4">
-                                <div class="card card-cita h-100" data-id="${cita.id}">
-                                    <div class="card-header">${cita.medico}</div>
-                                    <div class="card-body">
-                                        <p><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong>${cita.especialidad}</strong></p>
-                                        <p><i class="fas fa-calendar-alt me-2"></i>Fecha: <strong>${cita.fecha}</strong></p>
-                                        <p><i class="fas fa-user me-2"></i>Paciente: <strong>${cita.Paciente ? cita.Paciente.nombre : 'N/A'}</strong></p>
-                                        <button class="btn btn-danger btn-sm cancelar-cita-btn mt-2" data-id="${cita.id}"><i class="fas fa-times me-1"></i>Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        listaCitas.insertAdjacentHTML('beforeend', cardHtml);
-                    });
-
-                    // Añadir event listeners para cancelar cita
-                    document.querySelectorAll('.cancelar-cita-btn').forEach(button => {
-                        button.addEventListener('click', async function() {
-                            const citaId = this.dataset.id;
-                            if (confirm('¿Estás seguro de cancelar esta cita?')) {
-                                try {
-                                    const res = await fetch(`http://localhost:3000/appointments/${citaId}`, {
-                                        method: 'DELETE'
-                                    });
-
-                                    if (res.ok) {
-                                        alert('Cita cancelada con éxito.');
-                                        fetchCitas(); // Recargar la lista
-                                    } else {
-                                        const errorData = await res.json();
-                                        alert(`Error al cancelar cita: ${errorData.error || res.statusText}`);
-                                    }
-                                } catch (err) {
-                                    console.error("Error de conexión al cancelar cita:", err);
-                                    alert("Error de conexión. Inténtalo de nuevo.");
-                                }
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.error("Error al cargar citas:", error);
-                    listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-danger\" role=\"alert\">Error al cargar sus citas. Intente más tarde.</div></div>`;
-                }
-            }
-
-            // Manejar el envío del formulario para agendar nueva cita
-            document.getElementById('form-cita').addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const selectedDoctorId = doctorSelect.value;
-                const selectedDoctor = doctorsData.find(doc => doc.id == selectedDoctorId);
-
-                if (!selectedDoctor) {
-                    alert('Por favor, selecciona un doctor.');
-                    return;
-                }
-                if (!fechaInput.value) {
-                    alert('Por favor, selecciona una fecha para la cita.');
-                    return;
-                }
-
-                const nuevaCita = {
-                    medico: selectedDoctor.nombre,
-                    especialidad: selectedDoctor.especialidad,
-                    fecha: fechaInput.value,
-                    pacienteId: parseInt(pacienteId), // Asegúrate de que sea un número entero
-                    doctorId: parseInt(selectedDoctorId) // Asegúrate de que sea un número entero
-                };
-
-                try {
-                    const res = await fetch('http://localhost:3000/appointments', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(nuevaCita)
-                    });
-
-                    if (res.ok) {
-                        alert('Cita agendada con éxito.');
-                        fechaInput.value = ''; // Limpiar el campo de fecha
-                        doctorSelect.value = ''; // Resetear el select de doctor
-                        especialidadInput.value = ''; // Limpiar la especialidad
-                        fetchCitas(); // Recargar la lista de citas
-                    } else {
-                        const errorData = await res.json();
-                        alert(`Error al agendar cita: ${errorData.error || res.statusText}`);
-                    }
-                } catch (err) {
-                    console.error("Error de conexión al agendar cita:", err);
-                    alert("Error de conexión. Inténtalo de nuevo.");
-                }
-            });
-
-            // Cargar todo al inicio
-            loadDoctors();
-            fetchCitas();
+        // Manejar cierre de sesión
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          localStorage.removeItem("pacienteId");
+          window.location.href = "index.html"; // Redirige a la página principal o login
         });
-    </script>
-</body>
 
+        // Cargar doctores para el select
+        async function loadDoctors() {
+          try {
+            const res = await fetch("http://localhost:3000/doctors");
+            doctorsData = await res.json();
+
+            doctorSelect.innerHTML =
+              '<option value="">Selecciona un doctor</option>';
+            doctorsData.forEach((doctor) => {
+              const option = document.createElement("option");
+              option.value = doctor.id;
+              option.textContent = `${doctor.nombre} (${doctor.especialidad})`;
+              doctorSelect.appendChild(option);
+            });
+          } catch (error) {
+            console.error("Error al cargar doctores:", error);
+            alert("Error al cargar la lista de doctores.");
+          }
+        }
+
+        // Actualizar especialidad cuando se selecciona un doctor
+        doctorSelect.addEventListener("change", () => {
+          const selectedDoctorId = doctorSelect.value;
+          const selectedDoctor = doctorsData.find(
+            (doc) => doc.id == selectedDoctorId
+          );
+          especialidadInput.value = selectedDoctor
+            ? selectedDoctor.especialidad
+            : "";
+        });
+
+        // Función para cargar y mostrar las citas del paciente
+        async function fetchCitas() {
+          const pacienteId = localStorage.getItem("pacienteId");
+          if (!pacienteId) {
+            listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-warning\" role=\"alert\">Por favor, inicia sesión para ver tus citas.</div></div>`;
+            return;
+          }
+
+          try {
+            // **CAMBIO CLAVE: Añadir el pacienteId a la URL como query parameter**
+            const res = await fetch(
+              `http://localhost:3000/appointments?pacienteId=${pacienteId}`
+            );
+
+            if (!res.ok) {
+              // Si la respuesta HTTP no es exitosa (ej. 404, 500)
+              const errorText = await res.text(); // Leer el cuerpo de la respuesta como texto
+              throw new Error(
+                `HTTP error! status: ${res.status}, body: ${errorText}`
+              );
+            }
+
+            const citas = await res.json();
+
+            listaCitas.innerHTML = ""; // Limpiar la lista antes de añadir nuevas citas
+
+            if (citas.length === 0) {
+              listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-info\" role=\"alert\">No tienes citas agendadas aún.</div></div>`;
+              return;
+            }
+
+            citas.forEach((cita) => {
+              const cardHtml = `
+        <div class="col-md-6 mb-4">
+            <div class="card card-cita h-100" data-id="${
+              cita.id
+            }" data-doctorid="${cita.doctorId}">
+                <div class="card-header">${cita.medico}</div>
+                <div class="card-body">
+                    <p><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong class="text-especialidad">${
+                      cita.especialidad
+                    }</strong></p>
+                    <p><i class="fas fa-calendar-alt me-2"></i>Fecha:
+                        <input type="datetime-local" class="form-control form-control-sm d-none fecha-edit-input" value="${
+                          cita.fecha
+                        }">
+                        <strong class="fecha-label">${cita.fecha}</strong>
+                    </p>
+                    <p><i class="fas fa-user me-2"></i>Paciente: <strong>${
+                      cita.Paciente ? cita.Paciente.nombre : "N/A"
+                    }</strong></p>
+
+                    <select class="form-select form-select-sm mb-2 d-none doctor-edit-select">
+                        ${doctorsData
+                          .map(
+                            (doc) => `
+                            <option value="${doc.id}" ${
+                              doc.id == cita.doctorId ? "selected" : ""
+                            }>${doc.nombre} (${doc.especialidad})</option>
+                        `
+                          )
+                          .join("")}
+                    </select>
+
+                    <div class="mt-2">
+                        <button class="btn btn-primary btn-sm editar-cita-btn"><i class="fas fa-edit me-1"></i>Editar</button>
+                        <button class="btn btn-success btn-sm guardar-cita-btn d-none"><i class="fas fa-check me-1"></i>Guardar</button>
+                        <button class="btn btn-outline-info btn-sm descargar-pdf-btn"><i class="fas fa-file-pdf me-1"></i>PDF</button>
+
+                        <button class="btn btn-secondary btn-sm cancelar-edicion-btn d-none"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button class="btn btn-danger btn-sm cancelar-cita-btn float-end" data-id="${
+                          cita.id
+                        }"><i class="fas fa-trash me-1"></i>Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                        `;
+              listaCitas.insertAdjacentHTML("beforeend", cardHtml);
+            });
+
+            // Lógica para editar visualmente una cita
+            listaCitas
+              .querySelectorAll(".editar-cita-btn")
+              .forEach((button) => {
+                button.addEventListener("click", function () {
+                  const card = this.closest(".card-cita");
+                  card.querySelector(".fecha-label").classList.add("d-none");
+                  card
+                    .querySelector(".fecha-edit-input")
+                    .classList.remove("d-none");
+                  card
+                    .querySelector(".doctor-edit-select")
+                    .classList.remove("d-none");
+                  card
+                    .querySelector(".editar-cita-btn")
+                    .classList.add("d-none");
+                  card
+                    .querySelector(".guardar-cita-btn")
+                    .classList.remove("d-none");
+                  card
+                    .querySelector(".cancelar-edicion-btn")
+                    .classList.remove("d-none");
+                });
+              });
+
+            listaCitas
+              .querySelectorAll(".cancelar-edicion-btn")
+              .forEach((button) => {
+                button.addEventListener("click", function () {
+                  const card = this.closest(".card-cita");
+                  card.querySelector(".fecha-label").classList.remove("d-none");
+                  card
+                    .querySelector(".fecha-edit-input")
+                    .classList.add("d-none");
+                  card
+                    .querySelector(".doctor-edit-select")
+                    .classList.add("d-none");
+                  card
+                    .querySelector(".editar-cita-btn")
+                    .classList.remove("d-none");
+                  card
+                    .querySelector(".guardar-cita-btn")
+                    .classList.add("d-none");
+                  card
+                    .querySelector(".cancelar-edicion-btn")
+                    .classList.add("d-none");
+                });
+              });
+
+            listaCitas.querySelectorAll(".guardar-cita-btn").forEach((button) => {
+  button.addEventListener("click", async function () {
+    const card = this.closest(".card-cita");
+    const citaId = card.dataset.id;
+    const nuevaFecha = card.querySelector(".fecha-edit-input").value;
+    const nuevoDoctorId = card.querySelector(".doctor-edit-select").value;
+    const pacienteId = localStorage.getItem("pacienteId");
+
+    if (!nuevaFecha || !nuevoDoctorId || !pacienteId) {
+      alert("Faltan datos para actualizar la cita.");
+      return;
+    }
+
+    const ahora = new Date();
+    const fechaSeleccionada = new Date(nuevaFecha);
+    if (fechaSeleccionada <= ahora) {
+      alert("No puedes asignar una fecha pasada.");
+      return;
+    }
+
+    const resCheck = await fetch(
+      `http://localhost:3000/appointments?pacienteId=${pacienteId}`
+    );
+    const citasPaciente = await resCheck.json();
+
+    const duplicada = citasPaciente.some(
+      (cita) =>
+        cita.id != citaId &&
+        cita.doctorId == nuevoDoctorId &&
+        cita.fecha === nuevaFecha
+    );
+
+    if (duplicada) {
+      alert("Ya tienes una cita con ese doctor en esa fecha.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:3000/appointments/${citaId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: parseInt(citaId),
+          fecha: nuevaFecha,
+          doctorId: parseInt(nuevoDoctorId),
+          pacienteId: parseInt(pacienteId),
+        }),
+      });
+
+      if (res.ok) {
+        alert("Cita actualizada con éxito.");
+        fetchCitas();
+      } else {
+        const errorText = await res.text();
+        alert("No se pudo actualizar la cita:\n" + errorText);
+      }
+    } catch (err) {
+      console.error("Error al actualizar cita:", err);
+      alert("Error de red al actualizar.");
+    }
+  });
+});
+
+
+document.querySelectorAll(".descargar-pdf-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    const card = this.closest(".card-cita");
+    const citaId = card.dataset.id;
+    const doctor = card.querySelector(".card-header").textContent;
+    const especialidad = card.querySelector(".text-especialidad").textContent;
+    const fechaTexto = card.querySelector(".fecha-label").textContent;
+    const paciente = card.querySelector("p:nth-of-type(3) strong").textContent;
+
+    // Formatear fecha y hora
+    const fechaObj = new Date(fechaTexto);
+    const fechaFormateada = fechaObj.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    const horaFormateada = fechaObj.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const fechaYHora = `${fechaFormateada} - ${horaFormateada}`;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Encabezado morado
+    doc.setFillColor(207, 52, 118); // #cf3476
+    doc.rect(0, 0, 210, 30, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(255, 255, 255);
+    doc.text("CITA MÉDICA", 105, 20, null, null, "center");
+
+    // Línea decorativa
+    doc.setDrawColor(207, 52, 118);
+    doc.line(20, 40, 190, 40);
+
+    // Información de la cita
+    let y = 50;
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+
+    const datos = [
+      { label: "ID de la Cita", value: citaId },
+      { label: "Paciente", value: paciente },
+      { label: "Médico", value: doctor },
+      { label: "Especialidad", value: especialidad },
+      { label: "Fecha y hora", value: fechaYHora },
+    ];
+
+    datos.forEach((item) => {
+      doc.setFont("helvetica", "normal");
+      doc.text(`${item.label}:`, 25, y);
+      doc.setFont("helvetica", "bold");
+      doc.text(`${item.value}`, 70, y);
+      y += 10;
+    });
+
+    // Pie de página
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
+    doc.text("Generado por MedClinic - Sistema de Gestión de Citas", 105, 285, null, null, "center");
+
+    doc.save(`Cita_${citaId}.pdf`);
+  });
+});
+
+
+            // Añadir event listeners para cancelar cita
+            document
+              .querySelectorAll(".cancelar-cita-btn")
+              .forEach((button) => {
+                button.addEventListener("click", async function () {
+                  const citaId = this.dataset.id;
+                  if (confirm("¿Estás seguro de cancelar esta cita?")) {
+                    try {
+                      const res = await fetch(
+                        `http://localhost:3000/appointments/${citaId}`,
+                        {
+                          method: "DELETE",
+                        }
+                      );
+
+                      if (res.ok) {
+                        alert("Cita cancelada con éxito.");
+                        fetchCitas(); // Recargar la lista
+                      } else {
+                        const errorData = await res.json();
+                        alert(
+                          `Error al cancelar cita: ${
+                            errorData.error || res.statusText
+                          }`
+                        );
+                      }
+                    } catch (err) {
+                      console.error("Error de conexión al cancelar cita:", err);
+                      alert("Error de conexión. Inténtalo de nuevo.");
+                    }
+                  }
+                });
+              });
+          } catch (error) {
+            console.error("Error al cargar citas:", error);
+            listaCitas.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-danger\" role=\"alert\">Error al cargar sus citas. Intente más tarde.</div></div>`;
+          }
+        }
+
+        // Manejar el envío del formulario para agendar nueva cita
+        document
+          .getElementById("form-cita")
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const selectedDoctorId = doctorSelect.value;
+            const selectedDoctor = doctorsData.find(
+              (doc) => doc.id == selectedDoctorId
+            );
+
+            if (!selectedDoctor) {
+              alert("Por favor, selecciona un doctor.");
+              return;
+            }
+            if (!fechaInput.value) {
+              alert("Por favor, selecciona una fecha para la cita.");
+              return;
+            }
+
+            const fechaSeleccionada = new Date(fechaInput.value);
+            const ahora = new Date();
+            if (fechaSeleccionada <= ahora) {
+              alert("No puedes agendar una cita en el pasado.");
+              return;
+            }
+
+            // Verificar duplicados correctamente
+            const checkRes = await fetch(
+              `http://localhost:3000/appointments?pacienteId=${pacienteId}`
+            );
+            const citasPaciente = await checkRes.json();
+
+            const yaExiste = citasPaciente.some(
+              (cita) =>
+                cita.doctorId == selectedDoctorId &&
+                cita.fecha === fechaInput.value
+            );
+
+            if (yaExiste) {
+              alert("Ya tienes una cita con este doctor en esa fecha y hora.");
+              return;
+            }
+
+            const nuevaCita = {
+              medico: selectedDoctor.nombre,
+              especialidad: selectedDoctor.especialidad,
+              fecha: fechaInput.value,
+              pacienteId: parseInt(pacienteId),
+              doctorId: parseInt(selectedDoctorId),
+            };
+
+            try {
+              const res = await fetch("http://localhost:3000/appointments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevaCita),
+              });
+
+              if (res.ok) {
+                alert("Cita agendada con éxito.");
+                fechaInput.value = "";
+                doctorSelect.value = "";
+                especialidadInput.value = "";
+                fetchCitas();
+              } else {
+                const errorData = await res.json();
+                alert(
+                  `Error al agendar cita: ${errorData.error || res.statusText}`
+                );
+              }
+            } catch (err) {
+              console.error("Error de conexión al agendar cita:", err);
+              alert("Error de conexión. Inténtalo de nuevo.");
+            }
+          });
+
+        // Cargar todo al inicio
+        loadDoctors();
+        fetchCitas();
+      });
+      
+    </script>
+  </body>
 </html>
