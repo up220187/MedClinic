@@ -113,33 +113,64 @@
     });
 
     fetch(`http://localhost:3000/doctors/${doctorId}/citas`)
-      .then(res => res.json())
-      .then(citas => {
-        const tabla = document.getElementById('tablaPacientes');
-        if (citas.length === 0) {
-          tabla.innerHTML = `<div class="col-12"><div class="alert alert-info">No tienes citas registradas aún.</div></div>`;
-          return;
-        }
+  .then(res => res.json())
+  .then(citas => {
+    const tabla = document.getElementById('tablaPacientes');
+    tabla.innerHTML = '';
 
-        citas.forEach(cita => {
-          const card = `
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card card-doctor-panel shadow-sm border-purple">
-                <div class="card-body">
-                  <h5 class="card-title text-purple fw-bold">${cita.Paciente.nombre}</h5>
-                  <p class="card-text mb-1"><strong>Especialidad:</strong> ${cita.especialidad}</p>
-                  <p class="card-text mb-0"><strong>Fecha:</strong> ${cita.fecha}</p>
-                </div>
-              </div>
-            </div>`;
-          tabla.innerHTML += card;
-        });
-      })
-      .catch(err => {
-        document.getElementById('tablaPacientes').innerHTML = `
-          <div class="col-12"><div class="alert alert-danger">Error al cargar las citas: ${err.message || 'Verifica la consola para más detalles.'}</div></div>`;
-        console.error('Error al cargar citas del doctor:', err);
+    if (citas.length === 0) {
+      tabla.innerHTML = `<div class="col-12"><div class="alert alert-info">No tienes citas registradas aún.</div></div>`;
+      return;
+    }
+
+    citas.forEach(cita => {
+      const fechaObj = new Date(cita.fecha);
+      const fechaTexto = fechaObj.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const horaTexto = fechaObj.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+      const card = document.createElement('div');
+      card.className = "col-md-6 col-lg-4 mb-4";
+      card.innerHTML = `
+        <div class="card card-doctor-panel shadow-sm border-purple">
+          <div class="card-body">
+            <h5 class="card-title text-purple fw-bold">${cita.Paciente.nombre}</h5>
+            <p class="card-text mb-1"><strong>Especialidad:</strong> ${cita.especialidad}</p>
+            <p class="card-text mb-1"><strong>Fecha:</strong> ${fechaTexto}</p>
+            <p class="card-text mb-3"><strong>Hora:</strong> ${horaTexto}</p>
+            <button class="btn btn-danger btn-sm cancelar-btn" data-id="${cita.id}"><i class="fas fa-times me-1"></i> Cancelar cita</button>
+          </div>
+        </div>
+      `;
+      tabla.appendChild(card);
+    });
+
+    // Agregar evento a los botones de cancelar
+    document.querySelectorAll('.cancelar-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const citaId = btn.dataset.id;
+        if (confirm("¿Estás seguro que deseas cancelar esta cita?")) {
+          fetch(`http://localhost:3000/appointments/${citaId}`, {
+            method: 'DELETE'
+          })
+          .then(res => {
+            if (!res.ok) throw new Error("No se pudo cancelar la cita.");
+            // Eliminar visualmente
+            btn.closest('.col-md-6').remove();
+          })
+          .catch(err => {
+            alert("Error al cancelar la cita.");
+            console.error("Error:", err);
+          });
+        }
       });
+    });
+  })
+  .catch(err => {
+    document.getElementById('tablaPacientes').innerHTML = `
+      <div class="col-12"><div class="alert alert-danger">Error al cargar las citas: ${err.message || 'Verifica la consola para más detalles.'}</div></div>`;
+    console.error('Error al cargar citas del doctor:', err);
+  });
+
   </script>
 </body>
 </html>
