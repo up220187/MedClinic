@@ -1,4 +1,13 @@
 require('dotenv').config();
+
+process.removeAllListeners('warning'); // Agregar al inicio
+
+// Manejo de warnings (debe ir antes de otros imports)
+process.on('warning', (warning) => {
+  if (warning.name === 'DeprecationWarning' && /punycode/.test(warning.message)) return;
+  console.warn(warning);
+});
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
