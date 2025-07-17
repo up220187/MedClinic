@@ -1,176 +1,177 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Médicos Disponibles</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --pink-strong: #cf3476;
-            --pink-light: #f5c0cf;
-            --pink-dark: #86294e;
-            --gradient-bg: linear-gradient(135deg, white, #f5c0cf);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Médicos - Consulta Médica</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --rosa-principal: #cf3476;
+      --rosa-claro: #f5c0cf;
+      --rosa-oscuro: #86294e;
+      --rosa-gradient: linear-gradient(135deg, #cf3476, #f5c0cf);
+    }
 
-        body {
-            background: var(--gradient-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--pink-dark);
-        }
+    body {
+      background: linear-gradient(to right, #fff0f5, #ffe4ec);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
 
-        .navbar {
-            background-color: var(--pink-dark);
-        }
+    .navbar {
+      background: var(--rosa-gradient);
+      box-shadow: 0 4px 12px rgba(207, 52, 118, 0.3);
+    }
 
-        .navbar-brand,
-        .nav-link {
-            color: white !important;
-        }
+    .navbar-brand {
+      font-weight: bold;
+      color: white;
+    }
 
-        .nav-link.active,
-        .nav-link:hover {
-            background-color: var(--pink-light);
-            color: var(--pink-dark) !important;
-            border-radius: 1rem;
-            transition: background-color 0.3s;
-        }
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
 
-        .hero-section {
-            background: white;
-            padding: 3rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin: 2rem auto;
-            max-width: 1000px;
-        }
+    .nav-link:hover {
+      text-decoration: underline;
+    }
 
-        .display-4 {
-            color: var(--pink-dark);
-            font-weight: 700;
-        }
+    .section-title {
+      color: var(--rosa-oscuro);
+      margin-top: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-        .btn-outline-purple {
-            border-color: var(--pink-dark);
-            color: var(--pink-dark);
-        }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
 
-        .btn-outline-purple:hover {
-            background-color: var(--pink-dark);
-            color: white;
-        }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
 
-        .table {
-            background: white;
-            border: 1px solid var(--pink-light);
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+    .card-title {
+      color: var(--rosa-principal);
+    }
 
-        .table-light {
-            background-color: var(--pink-light) !important;
-            color: var(--pink-dark);
-        }
+    .btn-rosado {
+      background: var(--rosa-gradient);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+    }
 
-        .badge {
-            font-size: 0.7rem;
-            background-color: var(--pink-strong);
-        }
+    .btn-rosado:hover {
+      background: var(--rosa-principal);
+    }
 
-        footer {
-            background: var(--pink-dark);
-            color: white;
-            padding: 1rem 0;
-            margin-top: 4rem;
-        }
+    .dias-horas {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.5rem;
+    }
 
-        footer hr {
-            border-color: rgba(255,255,255,0.2);
-        }
-    </style>
+    footer {
+      background-color: #fce4ec;
+      padding: 20px 0;
+      text-align: center;
+      color: var(--rosa-oscuro);
+      margin-top: 40px;
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">Consulta Médica</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="medicos.html">Médicos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="citas.html">Citas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
-                    <li class="nav-item"><a class="nav-link" href="registro.html"><i class="fas fa-user-plus"></i> Registro</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container mt-5">
-        <div class="hero-section text-center">
-            <h2 class="display-4 mb-4">Médicos Disponibles</h2>
-            <button id="toggle-btn" class="btn btn-outline-purple mb-4">Mostrar/Ocultar lista de médicos</button>
-
-            <div id="medicos-container" style="display: none;">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Especialidad</th>
-                                <th>Horario</th>
-                                <th>Días</th>
-                                <th>Horas</th>
-                                <th>Citas Próximas</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-medicos"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><i class="fas fa-stethoscope"></i> Consulta Médica</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="citas.html">Citas</a></li>
+          <li class="nav-item"><a class="nav-link" href="logout.html">Cerrar sesión</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <footer class="text-center">
-        <div class="container">
-            <hr>
-            <p>© 2025 Consulta Médica - Tu salud es nuestra prioridad</p>
+  <!-- Contenido -->
+  <div class="container mt-5">
+    <h2 class="section-title"><i class="fas fa-user-md"></i> Lista de Médicos</h2>
+    <div class="row g-4">
+
+      <!-- Médico 1 -->
+      <div class="col-md-4">
+        <div class="card p-3">
+          <div class="card-body">
+            <h5 class="card-title text-center">Dr. Juan Pérez</h5>
+            <p class="text-center text-muted">Especialidad: Cardiología</p>
+            <p class="dias-horas"><strong>Horario:</strong> Lunes a Viernes, 9am - 5pm</p>
+            <p class="dias-horas"><strong>Días disponibles:</strong> lunes, martes, miércoles, jueves, viernes</p>
+            <p class="dias-horas"><strong>Horas:</strong> 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00</p>
+            <div class="text-center mt-3">
+              <button class="btn btn-rosado"><i class="fas fa-calendar-plus"></i> Solicitar Cita</button>
+            </div>
+          </div>
         </div>
-    </footer>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $('#toggle-btn').click(function () {
-            $('#medicos-container').toggle();
-        });
+      <!-- Médico 2 -->
+      <div class="col-md-4">
+        <div class="card p-3">
+          <div class="card-body">
+            <h5 class="card-title text-center">Dra. Ana Gómez</h5>
+            <p class="text-center text-muted">Especialidad: Pediatría</p>
+            <p class="dias-horas"><strong>Horario:</strong> Lunes a Viernes, 8am - 4pm</p>
+            <p class="dias-horas"><strong>Días disponibles:</strong> lunes, martes, miércoles, jueves, viernes</p>
+            <p class="dias-horas"><strong>Horas:</strong> 08:00, 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00</p>
+            <div class="text-center mt-3">
+              <button class="btn btn-rosado"><i class="fas fa-calendar-plus"></i> Solicitar Cita</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        // Este es un ejemplo de cómo llenar la tabla, debes reemplazarlo con tu lógica:
-        $(document).ready(function() {
-            const medicos = [
-                { nombre: "Dra. Ana López", especialidad: "Cardiología", horario: "8am - 2pm", dias: "Lun, Mar, Mié", horas: "8am, 9am, 10am", citas: "2 confirmadas" },
-                { nombre: "Dr. Juan Pérez", especialidad: "Psicología", horario: "10am - 4pm", dias: "Jue, Vie", horas: "10am, 11am, 12pm", citas: "1 pendiente" }
-            ];
+      <!-- Médico 3 -->
+      <div class="col-md-4">
+        <div class="card p-3">
+          <div class="card-body">
+            <h5 class="card-title text-center">Dr. Carlos López</h5>
+            <p class="text-center text-muted">Especialidad: Dermatología</p>
+            <p class="dias-horas"><strong>Horario:</strong> Martes y Jueves, 10am - 6pm</p>
+            <p class="dias-horas"><strong>Días disponibles:</strong> martes, jueves</p>
+            <p class="dias-horas"><strong>Horas:</strong> 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00, 18:00</p>
+            <div class="text-center mt-3">
+              <button class="btn btn-rosado"><i class="fas fa-calendar-plus"></i> Solicitar Cita</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            medicos.forEach(m => {
-                $('#tabla-medicos').append(`
-                    <tr>
-                        <td>${m.nombre}</td>
-                        <td>${m.especialidad}</td>
-                        <td>${m.horario}</td>
-                        <td>${m.dias}</td>
-                        <td>${m.horas}</td>
-                        <td>${m.citas}</td>
-                    </tr>
-                `);
-            });
-        });
-    </script>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Consulta Médica. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
