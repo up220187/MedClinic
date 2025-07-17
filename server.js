@@ -51,8 +51,8 @@ const startServer = async () => {
   await connectDB();
 
   try {
-    await sequelize.sync({ alter: true });
-    console.log('Modelos sincronizados con la base de datos SQLite.');
+    await sequelize.sync({ force: true });
+    console.log('Modelos sincronizados con la base de datos.');
   } catch (error) {
     console.error('❌ Error al sincronizar modelos:', error);
     process.exit(1);

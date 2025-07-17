@@ -7,8 +7,7 @@
     <title>Inicio Paciente - Consulta Médica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/paciente.css">
-
+    <link rel="stylesheet" href="css/paciente.css"> 
 </head>
 
 <body class="patient-homepage">
@@ -37,25 +36,26 @@
         </div>
     </nav>
 
-    <main class="container mt-5">
+    <main class="container mt-1">
         <section class="hero-patient text-center">
-            <h1 id="welcomeText">Bienvenido, Paciente</h1>
-            <p>Gestiona tus citas y encuentra los mejores especialistas.</p>
-            <a href="citas.html" class="btn btn-light btn-lg mt-3">Agendar Nueva Cita</a>
+            <h1 id="welcomeText"></h1>
         </section>
 
-        <section class="upcoming-appointments mt-5">
-            <h2 class="text-center text-purple mb-4">Próximas Citas</h2>
-            <div class="row" id="upcomingAppointments">
-                <div class="col-12 text-center" id="noAppointmentsMessage" style="display: none;">
-                    <div class="alert alert-info" role="alert">
-                        No tienes citas programadas. ¡Agenda una ahora!
-                    </div>
+    <header class="hero-section">
+        <div class="container">
+            <h1 id="welcomeMessage">Bienvenido, Paciente</h1>
+            <p>Gestiona tus citas médicas de forma sencilla y rápida.</p>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <section id="upcomingAppointments" class="mb-5">
+            <h2 class="text-center mb-4 text-purple">Próximas Citas</h2>
+            <div class="row" id="upcoming-appointments-list">
                 </div>
-            </div>
         </section>
 
-        <section class="features-patient mt-5 mb-5">
+               <section class="features-patient mt-5 mb-5">
             <h2 class="text-center text-purple mb-4">Nuestros Servicios</h2>
             <div class="row">
                 <div class="col-md-4 mb-4">
@@ -92,7 +92,7 @@
         </section>
     </main>
 
-        <footer class="bg-dark-purple text-white py-5">
+    <footer class="bg-dark-purple text-white py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
@@ -159,63 +159,75 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => {
             const pacienteId = localStorage.getItem('pacienteId');
             const pacienteNombre = localStorage.getItem('pacienteNombre');
-            const upcomingAppointmentsDiv = document.getElementById('upcomingAppointments');
-            const noAppointmentsMessage = document.getElementById('noAppointmentsMessage');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const upcomingAppointmentsDiv = document.getElementById('upcoming-appointments-list');
 
+            // Protección de ruta
             if (!pacienteId) {
                 alert("Debes iniciar sesión para acceder a esta página.");
-                window.location.href = 'login.html';
+                window.location.href = 'login.html'; // Redirige al login de paciente
                 return;
             }
 
-            document.getElementById('welcomeText').innerText = `Bienvenido, ${pacienteNombre || 'Paciente'}`;
+            if (pacienteNombre) {
+                welcomeMessage.textContent = `Bienvenido, ${pacienteNombre}`;
+            }
 
-            document.getElementById('logoutBtn').addEventListener('click', function (e) {
-                e.preventDefault();
+            // Manejar cierre de sesión
+            document.getElementById('logoutBtn').addEventListener('click', () => {
                 localStorage.removeItem('pacienteId');
                 localStorage.removeItem('pacienteNombre');
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Redirige a la página principal o login
             });
 
+            // Función para cargar las próximas citas del paciente
             async function fetchUpcomingAppointments() {
                 try {
-                    const res = await fetch(`http://localhost:3000/pacientes/${pacienteId}/citas`);
+                    const res = await fetch(`http://localhost:3000/appointments?pacienteId=${pacienteId}`);
+                    
                     if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
+                        const errorText = await res.text();
+                        throw new Error(`HTTP error! status: ${res.status}, body: ${errorText}`);
                     }
-                    const citas = await res.json();
 
-                    upcomingAppointmentsDiv.innerHTML = ''; // Limpiar citas existentes
+                    const citas = await res.json();
+                    upcomingAppointmentsDiv.innerHTML = ''; 
 
                     if (citas.length === 0) {
-                        noAppointmentsMessage.style.display = 'block';
-                    } else {
-                        noAppointmentsMessage.style.display = 'none';
-                        citas.forEach(cita => {
-                            const appointmentCard = `
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card h-100 shadow-sm card-appointment">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><i class="fas fa-user-md me-2"></i>${cita.Doctor.nombre}</h5>
-                                            <p class="card-text"><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong>${cita.especialidad}</strong></p>
-                                            <p class="card-text"><i class="fas fa-calendar-alt me-2"></i>Fecha: <strong>${new Date(cita.fecha).toLocaleDateString()}</strong></p>
-                                            <p class="card-text"><i class="fas fa-clock me-2"></i>Hora: <strong>${cita.hora}</strong></p>
-                                            <div class="d-grid mt-3">
-                                                <a href="citas.html?edit=${cita.id}" class="btn btn-outline-purple btn-sm">Ver Detalles / Reagendar</a>
-                                            </div>
+                        upcomingAppointmentsDiv.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-info\" role=\"alert\">No tienes citas agendadas aún. ¡Agenda una!</div></div>`;
+                        return;
+                    }
+
+                    // Ordenar citas por fecha (ascendente)
+                    citas.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+                    // Mostrar solo las 3 primeras o menos si hay menos de 3
+                    const citasToShow = citas.slice(0, 3);
+
+                    citasToShow.forEach(cita => {
+                        const appointmentCard = `
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card card-appointment h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-user-md me-2"></i>${cita.medico}</h5>
+                                        <p class="card-text"><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong>${cita.especialidad}</strong></p>
+                                        <p class="card-text"><i class="fas fa-calendar-alt me-2"></i>Fecha: <strong>${new Date(cita.fecha).toLocaleDateString()}</strong></p>
+                                        <p class="card-text"><i class="fas fa-user me-2"></i>Paciente: <strong>${cita.Paciente ? cita.Paciente.nombre : 'N/A'}</strong></p>
+                                        <div class="d-grid mt-3">
+                                            <a href="citas.html" class="btn btn-outline-purple btn-sm">Ver todas mis citas</a>
                                         </div>
                                     </div>
                                 </div>
-                            `;
-                            upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentCard);
-                        });
-                    }
+                            </div>
+                        `;
+                        upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentCard);
+                    });
                 } catch (error) {
                     console.error("Error al cargar citas:", error);
-                    upcomingAppointmentsDiv.innerHTML = `<div class="col-12 text-center"><div class="alert alert-danger" role="alert">Error al cargar sus citas. Intente más tarde.</div></div>`;
+                    upcomingAppointmentsDiv.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-danger\" role=\"alert\">Error al cargar sus citas. Intente más tarde.</div></div>`;
                 }
             }
 
