@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - Consulta Médica</title>
+    <title>Pacientes - Consulta Médica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/doctor.css">
+    <link rel="stylesheet" href="/Public/js/css/doctor.css">
 </head>
-<body class="doctor-perfil">
-    <!-- Navbar morado para doctor -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-purple sticky-top">
+<body class="doctor-pacientes">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-purple sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="doctor-homepage.html">
                 <i class="fas fa-heartbeat me-2"></i>
@@ -28,7 +27,7 @@
                         <a class="nav-link" href="doctor-citas.html"><i class="fas fa-calendar-check me-1"></i> Agenda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="doctor-pacientes.html"><i class="fas fa-users me-1"></i> Pacientes</a>
+                        <a class="nav-link active" href="doctor-pacientes.html"><i class="fas fa-users me-1"></i> Pacientes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="doctor-recetas.html"><i class="fas fa-file-prescription me-1"></i> Recetas</a>
@@ -51,94 +50,41 @@
     
     <main class="main-content py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <!-- Tarjeta de perfil -->
-                    <div class="card profile-card shadow-sm mb-4">
-                        <div class="card-body text-center">
-                            <div class="profile-picture mb-3">
-                                <img src="img/default-doctor.jpg" class="rounded-circle" width="150" height="150" alt="Foto de perfil">
-                                <button class="btn btn-sm btn-purple change-photo-btn">
-                                    <i class="fas fa-camera me-1"></i>Cambiar
-                                </button>
-                            </div>
-                            <h3 class="profile-name mb-1">Dr. Nombre Apellido</h3>
-                            <p class="text-muted mb-3">Especialidad</p>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="me-4">
-                                    <h5 class="mb-0">154</h5>
-                                    <small class="text-muted">Pacientes</small>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">4.9</h5>
-                                    <small class="text-muted">Calificación</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Información de contacto -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3"><i class="fas fa-address-card me-2"></i>Información de Contacto</h5>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-envelope me-2"></i> correo@ejemplo.com</li>
-                                <li class="mb-2"><i class="fas fa-phone me-2"></i> +123 456 7890</li>
-                                <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Ciudad, País</li>
-                            </ul>
-                        </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="page-title"><i class="fas fa-users me-2"></i>Mis Pacientes</h1>
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar paciente...">
+                        <button class="btn btn-purple" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-8">
-                    <!-- Formulario de edición -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title mb-4"><i class="fas fa-user-edit me-2"></i>Editar Perfil</h5>
-                            <form>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="apellido" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control" id="apellido">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="especialidad" class="form-label">Especialidad</label>
-                                        <select class="form-select" id="especialidad">
-                                            <option>Seleccionar especialidad</option>
-                                            <!-- Opciones de especialidades -->
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="cedula" class="form-label">N° de Cédula</label>
-                                        <input type="text" class="form-control" id="cedula">
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="bio" class="form-label">Biografía</label>
-                                        <textarea class="form-control" id="bio" rows="3"></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-purple">Guardar Cambios</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Configuración de horarios -->
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-4"><i class="fas fa-clock me-2"></i>Horarios de Atención</h5>
-                            <form>
-                                <!-- Configuración de horarios -->
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-purple">Actualizar Horarios</button>
-                                </div>
-                            </form>
-                        </div>
+            <!-- Listado de pacientes -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-purple">
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Última consulta</th>
+                                    <th>Próxima cita</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Listado de pacientes dinámico -->
+                                <tr class="no-patients">
+                                    <td colspan="4" class="text-center py-5">
+                                        <i class="fas fa-user-friends text-muted mb-3" style="font-size: 3rem;"></i>
+                                        <h4>No hay pacientes registrados</h4>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
