@@ -1,286 +1,166 @@
-/* patient-home.css - Estructura base para homepage de paciente */
-
-/* Variables de color */
 :root {
-    --purple-primary: #6a0dad;
-    --purple-secondary: #8a2be2;
-    --purple-dark: #4b0082;
-    --purple-light: #e6e6fa;
-    --purple-lighter: #f9f0ff;
-    --purple-text: #4b0082;
-}
+            --purple-primary: #6a0dad;
+            --purple-secondary: #8a2be2;
+            --purple-dark: #4b0082;
+            --purple-light: #e6e6fa;
+            --purple-lighter: #f9f0ff;
+            --purple-text: #4b0082;
+        }
+        .card-cita {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-/* Estilos generales */
-.patient-homepage {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--purple-text);
-    background-color: #f8f9fa;
-}
+        .card-cita .card-header {
+            background-color: #6f42c1;
+            color: white;
+            font-weight: bold;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
 
-/* Navbar */
-.navbar.bg-purple {
-    background-color: var(--purple-primary) !important;
-    box-shadow: 0 2px 10px rgba(106, 13, 173, 0.1);
-}
+        .card-cita .card-body p {
+            margin-bottom: 0.5rem;
+        }
 
-.nav-link {
-    font-weight: 500;
-}
+        .card-cita .card-body i {
+            color: #6f42c1;
+            margin-right: 8px;
+        }
+        /* Estilos para el botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
 
-.nav-link.active {
-    font-weight: 600;
-}
+        .whatsapp-float .whatsapp-icon {
+            margin-top: 5px;
+        }
 
-/* Banner de bienvenida */
-.welcome-banner {
-    background-color: var(--purple-lighter);
-    border-bottom: 1px solid rgba(138, 43, 226, 0.1);
-}
+        .whatsapp-float .whatsapp-text {
+            display: none;
+            font-size: 14px;
+            margin-left: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-.welcome-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--purple-dark);
-}
+        .whatsapp-float:hover {
+            width: auto;
+            padding: 0 15px;
+        }
 
-.user-name {
-    color: var(--purple-primary);
-    font-weight: 700;
-}
+        .whatsapp-float:hover .whatsapp-text {
+            display: inline-block;
+            opacity: 1;
+        }
 
-.welcome-message {
-    color: var(--purple-text);
-    opacity: 0.8;
-}
+        .whatsapp-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #FFF;
+        }
+        .bg-purple {
+            background-color: var(--purple-primary) !important;
+        }
 
-.notification-bell {
-    font-size: 1.2rem;
-    color: var(--purple-text);
-}
+        .bg-dark-purple {
+            background-color: var(--purple-dark) !important;
+        }
 
-.health-badge {
-    font-weight: 500;
-    padding: 5px 10px;
-}
+        .bg-light-purple {
+            background-color: var(--purple-lighter) !important;
+        }
 
-/* Secciones */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .text-purple {
+            color: var(--purple-primary) !important;
+        }
 
-.section-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--purple-dark);
-    margin-bottom: 0;
-}
+        .text-purple-light {
+            color: var(--purple-light) !important;
+        }
 
-/* Mensajes de estado vacío */
-.no-appointments,
-.no-reminders,
-.no-history {
-    color: var(--purple-text);
-    opacity: 0.7;
-}
+        .text-purple-dark {
+            color: var(--purple-dark) !important;
+        }
 
-/* Tarjetas */
-.card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
+        .btn-purple {
+            background-color: var(--purple-primary);
+            border-color: var(--purple-primary);
+            color: white !important;
+            font-weight: 600;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
 
-.card:hover {
-    box-shadow: 0 5px 20px rgba(106, 13, 173, 0.1);
-}
+        .btn-purple:hover {
+            background-color: var(--purple-dark);
+            border-color: var(--purple-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.3);
+        }
 
-/* Acciones rápidas */
-.quick-action-card {
-    text-decoration: none;
-    color: inherit;
-}
+        .btn-outline-purple {
+            color: var(--purple-primary);
+            border-color: var(--purple-primary);
+            font-weight: 600;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
 
-.quick-action-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: var(--purple-primary);
-    background-color: rgba(138, 43, 226, 0.1);
-}
+        .btn-outline-purple:hover {
+            background-color: var(--purple-primary);
+            border-color: var(--purple-primary);
+            color: white !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.3);
+        }
 
-.quick-action-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--purple-dark);
-}
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* Botones */
-.btn-purple {
-    background-color: var(--purple-primary);
-    border-color: var(--purple-primary);
-    color: white;
-    font-weight: 500;
-}
+        .bg-purple-light {
+            background-color: rgba(106, 13, 173, 0.1);
+        }
 
-.btn-purple:hover {
-    background-color: var(--purple-dark);
-    border-color: var(--purple-dark);
-}
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--purple-light);
+        }
 
-.btn-outline-purple {
-    color: var(--purple-primary);
-    border-color: var(--purple-primary);
-    font-weight: 500;
-}
-
-.btn-outline-purple:hover {
-    background-color: var(--purple-lighter);
-}
-
-/* WhatsApp Float */
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 100;
-}
-
-.whatsapp-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    background-color: #25D366;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
-    transition: all 0.3s ease;
-}
-
-.whatsapp-link:hover {
-    background-color: #128C7E;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
-}
-
-.whatsapp-icon {
-    font-size: 24px;
-    margin-right: 10px;
-}
-
-.whatsapp-text {
-    font-weight: 500;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .whatsapp-text {
-        display: none;
-    }
-    
-    .whatsapp-link {
-        padding: 12px;
-        width: 50px;
-        height: 50px;
-        justify-content: center;
-    }
-    
-    .whatsapp-icon {
-        margin-right: 0;
-    }
-}
-
-bg-purple {
-    background-color: var(--purple-primary) !important;
-}
-
-.bg-dark-purple {
-    background-color: var(--purple-dark) !important;
-}
-
-.bg-light-purple {
-    background-color: var(--purple-lighter) !important;
-}
-
-.text-purple {
-    color: var(--purple-primary) !important;
-}
-
-.text-purple-light {
-    color: var(--purple-light) !important;
-}
-
-.text-purple-dark {
-    color: var(--purple-dark) !important;
-}
-
-.btn-purple {
-    background-color: var(--purple-primary);
-    border-color: var(--purple-primary);
-    color: white !important;
-    font-weight: 600;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-}
-
-.btn-purple:hover {
-    background-color: var(--purple-dark);
-    border-color: var(--purple-dark);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(106, 13, 173, 0.3);
-}
-
-.btn-outline-purple {
-    color: var(--purple-primary);
-    border-color: var(--purple-primary);
-    font-weight: 600;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-}
-
-.btn-outline-purple:hover {
-    background-color: var(--purple-primary);
-    border-color: var(--purple-primary);
-    color: white !important;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(106, 13, 173, 0.3);
-}
-
-.icon-box {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bg-purple-light {
-    background-color: rgba(106, 13, 173, 0.1);
-}
-
-.card {
-    transition: all 0.3s ease;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--purple-light);
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(106, 13, 173, 0.1);
-}
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(106, 13, 173, 0.1);
+        }
 
         .card-appointment {
             border: none;
@@ -311,7 +191,7 @@ bg-purple {
             margin-right: 10px;
         }
 
-                .hero-section {
+        .hero-section {
             background: linear-gradient(to right, #8a2be2, #a252e6); /* Degradado púrpura */
             color: white;
             padding: 60px 0;
@@ -326,35 +206,6 @@ bg-purple {
 
         .hero-section p {
             font-size: 1.25rem;
-        }
-
-        .card-appointment {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden; /* Para que el shadow no se salga */
-        }
-
-        .card-appointment:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-appointment .card-body {
-            padding: 25px;
-        }
-
-        .card-appointment .card-title {
-            color: #6f42c1; /* Púrpura para el título */
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .card-appointment .card-text i {
-            color: #6f42c1; /* Iconos en púrpura */
-            margin-right: 10px;
         }
 
         .btn-outline-purple {

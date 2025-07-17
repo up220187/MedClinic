@@ -7,84 +7,11 @@
     <title>Mis Citas - Consulta Médica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/paciente.css" />
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-    <style>
-        .card-cita {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .card-cita .card-header {
-            background-color: #6f42c1;
-            color: white;
-            font-weight: bold;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        .card-cita .card-body p {
-            margin-bottom: 0.5rem;
-        }
-
-        .card-cita .card-body i {
-            color: #6f42c1;
-            margin-right: 8px;
-        }
-        /* Estilos para el botón flotante de WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            right: 40px;
-            background-color: #25d366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 3px #999;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-float .whatsapp-icon {
-            margin-top: 5px;
-        }
-
-        .whatsapp-float .whatsapp-text {
-            display: none;
-            font-size: 14px;
-            margin-left: 10px;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .whatsapp-float:hover {
-            width: auto;
-            padding: 0 15px;
-        }
-
-        .whatsapp-float:hover .whatsapp-text {
-            display: inline-block;
-            opacity: 1;
-        }
-
-        .whatsapp-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #FFF;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="css/paciente.css">
 </head>
 
 <body>
@@ -502,6 +429,7 @@
                     if (citas.length === 0) {
                         noCitasMessage.style.display = 'block';
                     } else {
+                        noCitasMessage.style.display = 'none';
                         citas.forEach(cita => {
                             // FIX para el problema de un día antes:
                             // Parsar la fecha como fecha local para evitar problemas de zona horaria
@@ -514,7 +442,7 @@
                                 day: 'numeric'
                             });
                             
-                             // Usar encadenamiento opcional para acceder a Doctor
+                            // Usar encadenamiento opcional para acceder a Doctor
                             let diasAtencion = "N/A";
                             if (cita.Doctor?.horario) { // Usar ?. aquí
                                 const horarioString = cita.Doctor.horario;
@@ -526,12 +454,17 @@
 
                             const citaCard = `
                                 <div class="col-md-12 mb-3">
-                                    <div class="card shadow-sm card-cita">
+                                    <div class="card shadow-sm card-cita" id="cita-card-${cita.id}">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <span>Cita con ${cita.Doctor?.nombre || cita.medico}</span>
-                                            <button class="btn btn-sm btn-outline-light btn-cancelar" data-id="${cita.id}">
-                                                <i class="fas fa-times-circle me-1"></i>Cancelar
-                                            </button>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-info btn-download-pdf" data-id="${cita.id}">
+                                                    <i class="fas fa-file-pdf me-1"></i>Descargar PDF
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-light btn-cancelar" data-id="${cita.id}">
+                                                    <i class="fas fa-times-circle me-1"></i>Cancelar
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="card-body">
                                             <p><i class="fas fa-user-md"></i> Médico: <strong>${cita.Doctor?.nombre || cita.medico}</strong></p>
@@ -564,9 +497,93 @@
                                             alert(`Error al cancelar cita: ${errorData.error || res.statusText}`);
                                         }
                                     } catch (err) {
-                                    console.error("Error de conexión al cancelar cita:", err);
+                                        console.error("Error de conexión al cancelar cita:", err);
                                         alert("Error de conexión. Inténtalo de nuevo.");
                                     }
+                                }
+                            });
+                        });
+
+                        // Asignar listeners a los botones de descarga de PDF
+                        document.querySelectorAll('.btn-download-pdf').forEach(button => {
+                            button.addEventListener('click', function () {
+                                const citaId = this.dataset.id;
+                                const citaCardFull = document.getElementById(`cita-card-${citaId}`); 
+
+                                if (citaCardFull) {
+                                    const medico = citaCardFull.querySelector('p:nth-child(1) strong').textContent;
+                                    const especialidad = citaCardFull.querySelector('p:nth-child(2) strong').textContent;
+                                    const fecha = citaCardFull.querySelector('p:nth-child(3) strong').textContent;
+                                    const hora = citaCardFull.querySelector('p:nth-child(4) strong').textContent;
+                                    const diasAtencionMedico = citaCardFull.querySelector('p:nth-child(5) strong').textContent;
+
+                                    // Crear una nueva instancia de jsPDF
+                                    const doc = new window.jspdf.jsPDF(); 
+
+                                    // Colores del CSS
+                                    const purplePrimary = '#6a0dad';
+                                    const purpleDark = '#4b0082';
+                                    const white = '#FFFFFF';
+
+                                    let yPos = 20; // Posición Y inicial
+                                    const marginX = 20; // Margen lateral
+
+                                    // **Encabezado Profesional**
+                                    doc.setFillColor(purpleDark);
+                                    doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
+                                    doc.setFontSize(20);
+                                    doc.setTextColor(white);
+                                    doc.setFont('helvetica', 'bold'); // Fuente en negrita para el encabezado
+                                    doc.text("Consulta Médica Online", marginX, 25);
+
+                                    // Línea divisoria debajo del encabezado
+                                    doc.setDrawColor(purplePrimary);
+                                    doc.setLineWidth(0.5);
+                                    doc.line(marginX, 45, doc.internal.pageSize.width - marginX, 45);
+                                    yPos = 55;
+
+                                    // Título Principal
+                                    doc.setFontSize(22);
+                                    doc.setTextColor(purplePrimary);
+                                    doc.setFont('helvetica', 'bold');
+                                    doc.text("Detalles de la Cita Médica", doc.internal.pageSize.width / 2, yPos, { align: 'center' });
+                                    yPos += 15;
+
+                                    doc.setFontSize(14);
+                                    doc.setTextColor(purpleDark);
+                                    doc.setFont('helvetica', 'normal'); // Volver a fuente normal para los detalles
+                                    const lineHeight = 7; // Espaciado entre líneas
+
+                                    doc.text(`Médico: ${medico}`, marginX, yPos);
+                                    yPos += lineHeight * 2; // Aumentar un poco el espacio
+
+                                    doc.text(`Especialidad: ${especialidad}`, marginX, yPos);
+                                    yPos += lineHeight * 2;
+
+                                    doc.text(`Fecha: ${fecha}`, marginX, yPos);
+                                    yPos += lineHeight * 2;
+
+                                    doc.text(`Hora: ${hora}`, marginX, yPos);
+                                    yPos += lineHeight * 2;
+
+                                    doc.text(`Días de atención del médico: ${diasAtencionMedico}`, marginX, yPos);
+                                    yPos += lineHeight * 2;
+
+                                    // **Nota al Pie de Página**
+                                    const footerY = doc.internal.pageSize.height - 20;
+                                    doc.setDrawColor(purplePrimary);
+                                    doc.setLineWidth(0.5);
+                                    doc.line(marginX, footerY - 10, doc.internal.pageSize.width - marginX, footerY - 10);
+
+                                    doc.setFontSize(10);
+                                    doc.setTextColor(purpleDark);
+                                    doc.text("Este documento es una confirmación de su cita.", doc.internal.pageSize.width / 2, footerY, { align: 'center' });
+
+
+                                    // Guardar el PDF
+                                    doc.save(`Cita_Confirmacion_${citaId}.pdf`);
+                                } else {
+                                    alert('No se pudo encontrar la información de la cita para generar el PDF.');
                                 }
                             });
                         });

@@ -48,7 +48,7 @@ app.use('/contact', contactRoutes);
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 const startServer = async () => {
-  await connectDB();
+  await sequelize.sync({ force: true });
 
   try {
     // CAMBIO IMPORTANTE: Usamos alter: true para no borrar la tabla cada vez
