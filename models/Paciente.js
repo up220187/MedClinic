@@ -4,9 +4,9 @@ const { sequelize } = require('../config/db');
 const Paciente = sequelize.define('Paciente', {
   id: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+    primaryKey: true,
+    autoIncrement: true
+},
   nombre: {
     type: DataTypes.STRING,
     allowNull: false

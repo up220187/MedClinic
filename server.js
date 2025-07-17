@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 const Paciente = require('./models/Paciente');
@@ -25,14 +25,14 @@ const Appointment = require('./models/Appointment');
 
 
 if (Paciente && Doctor && Appointment) {
-  Paciente.hasMany(Appointment, { foreignKey: 'pacienteId', as: 'CitasPaciente' });
-  Appointment.belongsTo(Paciente, { foreignKey: 'pacienteId' });
+  Paciente.hasMany(Appointment, { foreignKey: 'pacienteId', as: 'CitasPaciente' });
+  Appointment.belongsTo(Paciente, { foreignKey: 'pacienteId' });
 
-  Doctor.hasMany(Appointment, { foreignKey: 'doctorId', as: 'CitasDoctor' });
-  Appointment.belongsTo(Doctor, { foreignKey: 'doctorId' });
-  console.log('Asociaciones de modelos definidas.');
+  Doctor.hasMany(Appointment, { foreignKey: 'doctorId', as: 'CitasDoctor' });
+  Appointment.belongsTo(Doctor, { foreignKey: 'doctorId' });
+  console.log('Asociaciones de modelos definidas.');
 } else {
-  console.warn("No todos los modelos se cargaron correctamente para definir asociaciones.");
+  console.warn("No todos los modelos se cargaron correctamente para definir asociaciones.");
 }
 
 
@@ -48,19 +48,20 @@ app.use('/contact', contactRoutes);
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 const startServer = async () => {
-  await connectDB();
+  await connectDB();
 
-  try {
-    await sequelize.sync({ force: true });
-    console.log('Modelos sincronizados con la base de datos.');
-  } catch (error) {
-    console.error('❌ Error al sincronizar modelos:', error);
-    process.exit(1);
-  }
+  try {
+    // CAMBIO IMPORTANTE: Usamos alter: true para no borrar la tabla cada vez
+    await sequelize.sync({ alter: true }); 
+    console.log('Modelos sincronizados con la base de datos (tablas alteradas si fue necesario).');
+  } catch (error) {
+    console.error('❌ Error al sincronizar modelos:', error);
+    process.exit(1);
+  }
 
-  app.listen(PORT, () => {
-    console.log(`Servidor Express corriendo en http://localhost:${PORT}`);
-  });
+  app.listen(PORT, () => {
+    console.log(`Servidor Express corriendo en http://localhost:${PORT}`);
+  });
 };
 
 startServer();

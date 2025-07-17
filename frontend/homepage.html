@@ -7,7 +7,79 @@
     <title>Inicio Paciente - Consulta Médica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/paciente.css"> 
+    <link rel="stylesheet" href="css/paciente.css">
+
+    <style>
+        .card-appointment {
+            border-left: 5px solid #6f42c1; /* Color púrpura en el borde izquierdo */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card-appointment:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-appointment .card-title {
+            color: #6f42c1;
+            font-weight: bold;
+        }
+
+        .card-appointment .card-text i {
+            color: #6f42c1;
+        }
+
+        /* Estilos para el botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float .whatsapp-icon {
+            margin-top: 5px;
+        }
+
+        .whatsapp-float .whatsapp-text {
+            display: none;
+            font-size: 14px;
+            margin-left: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            width: auto;
+            padding: 0 15px;
+        }
+
+        .whatsapp-float:hover .whatsapp-text {
+            display: inline-block;
+            opacity: 1;
+        }
+
+        .whatsapp-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #FFF;
+        }
+    </style>
 </head>
 
 <body class="patient-homepage">
@@ -36,60 +108,47 @@
         </div>
     </nav>
 
-    <main class="container mt-1">
-        <section class="hero-patient text-center">
-            <h1 id="welcomeText"></h1>
-        </section>
-
-    <header class="hero-section">
-        <div class="container">
-            <h1 id="welcomeMessage">Bienvenido, Paciente</h1>
-            <p>Gestiona tus citas médicas de forma sencilla y rápida.</p>
+    <main class="container mt-5">
+        <div class="welcome-section text-center mb-5">
+            <h1 class="text-purple display-4">Bienvenido, <span id="pacienteNombre">Paciente</span></h1>
+            <p class="lead text-muted">Tu portal personal para gestionar tus citas médicas.</p>
         </div>
-    </header>
 
-    <div class="container mt-5">
-        <section id="upcomingAppointments" class="mb-5">
-            <h2 class="text-center mb-4 text-purple">Próximas Citas</h2>
-            <div class="row" id="upcoming-appointments-list">
-                </div>
-        </section>
-
-               <section class="features-patient mt-5 mb-5">
-            <h2 class="text-center text-purple mb-4">Nuestros Servicios</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 text-center shadow-sm card-appointment">
-                        <div class="card-body">
-                            <i class="fas fa-user-md fa-3x mb-3"></i>
-                            <h5 class="card-title">Encuentra a tu Médico</h5>
-                            <p class="card-text">Busca por especialidad o nombre y conoce a nuestros profesionales.</p>
-                            <a href="medicos.html" class="btn btn-outline-purple mt-3">Ver Médicos</a>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-purple"><i class="fas fa-calendar-alt me-2"></i>Próximas Citas</h5>
+                        <p class="card-text text-muted">Consulta tus citas agendadas.</p>
+                        <div id="upcomingAppointments" class="row">
+                            <div class="col-12 text-center" id="noUpcomingAppointmentsMessage" style="display: none;">
+                                <div class="alert alert-info" role="alert">
+                                    No tienes citas próximas agendadas.
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 text-center shadow-sm card-appointment">
-                        <div class="card-body">
-                            <i class="fas fa-calendar-alt fa-3x mb-3"></i>
-                            <h5 class="card-title">Agenda Fácilmente</h5>
-                            <p class="card-text">Reserva tu cita en pocos pasos y a cualquier hora.</p>
-                            <a href="citas.html" class="btn btn-outline-purple mt-3">Agendar Cita</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 text-center shadow-sm card-appointment">
-                        <div class="card-body">
-                            <i class="fas fa-history fa-3x mb-3"></i>
-                            <h5 class="card-title">Historial de Citas</h5>
-                            <p class="card-text">Revisa tus citas pasadas y gestiona las futuras.</p>
-                            <a href="citas.html" class="btn btn-outline-purple mt-3">Ver Historial</a>
+                        <div class="d-grid mt-4">
+                            <a href="citas.html" class="btn btn-purple">
+                                <i class="fas fa-plus-circle me-2"></i>Agendar o Ver Todas las Citas
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-purple"><i class="fas fa-user-md me-2"></i>Nuestros Médicos</h5>
+                        <p class="card-text text-muted">Explora nuestra lista de especialistas disponibles.</p>
+                        <div class="d-grid mt-4">
+                            <a href="medicos.html" class="btn btn-outline-purple">
+                                <i class="fas fa-search me-2"></i>Ver Médicos
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="bg-dark-purple text-white py-5">
@@ -100,7 +159,7 @@
                         <i class="fas fa-heartbeat me-2"></i> Consulta Médica
                     </h5>
                     <p class="text-purple-light">Tu salud es nuestra prioridad. Ofrecemos atención médica profesional en línea con los más altos estándares de calidad.</p>
-                    
+
                     <div class="d-flex gap-3 mt-4">
                         <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
@@ -108,7 +167,7 @@
                         <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                     <h6 class="mb-4">Servicios</h6>
                     <ul class="list-unstyled">
@@ -117,11 +176,11 @@
                         <li class="mb-2"><a href="#" class="text-purple-light">Psicología</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="col-lg-4 col-md-4">
                     <h6 class="mb-4">Suscríbete a nuestro boletín</h6>
                     <p class="text-purple-light mb-4">Recibe las últimas noticias y promociones en tu correo.</p>
-                    
+
                     <form class="mb-3">
                         <div class="input-group">
                             <input type="email" class="form-control" placeholder="Tu correo electrónico">
@@ -130,9 +189,9 @@
                     </form>
                 </div>
             </div>
-            
+
             <hr class="my-5 border-purple">
-            
+
             <div class="row">
                 <div class="col-md-6 text-center text-md-start">
                     <p class="mb-0 text-purple-light">© 2025 Consulta Médica Online. Todos los derechos reservados.</p>
@@ -159,75 +218,78 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function () {
             const pacienteId = localStorage.getItem('pacienteId');
             const pacienteNombre = localStorage.getItem('pacienteNombre');
-            const welcomeMessage = document.getElementById('welcomeMessage');
-            const upcomingAppointmentsDiv = document.getElementById('upcoming-appointments-list');
 
-            // Protección de ruta
             if (!pacienteId) {
                 alert("Debes iniciar sesión para acceder a esta página.");
-                window.location.href = 'login.html'; // Redirige al login de paciente
+                window.location.href = 'index.html';
                 return;
             }
 
             if (pacienteNombre) {
-                welcomeMessage.textContent = `Bienvenido, ${pacienteNombre}`;
+                document.getElementById('pacienteNombre').textContent = pacienteNombre;
             }
 
-            // Manejar cierre de sesión
-            document.getElementById('logoutBtn').addEventListener('click', () => {
+            document.getElementById('logoutBtn').addEventListener('click', function (e) {
+                e.preventDefault();
                 localStorage.removeItem('pacienteId');
                 localStorage.removeItem('pacienteNombre');
-                window.location.href = 'index.html'; // Redirige a la página principal o login
+                window.location.href = 'index.html';
             });
 
-            // Función para cargar las próximas citas del paciente
             async function fetchUpcomingAppointments() {
+                const upcomingAppointmentsDiv = document.getElementById('upcomingAppointments');
+                upcomingAppointmentsDiv.innerHTML = ''; // Limpiar citas existentes
+                document.getElementById('noUpcomingAppointmentsMessage').style.display = 'none';
+
                 try {
                     const res = await fetch(`http://localhost:3000/appointments?pacienteId=${pacienteId}`);
-                    
                     if (!res.ok) {
-                        const errorText = await res.text();
-                        throw new Error(`HTTP error! status: ${res.status}, body: ${errorText}`);
+                        throw new Error(`HTTP error! status: ${res.status}`);
                     }
-
                     const citas = await res.json();
-                    upcomingAppointmentsDiv.innerHTML = ''; 
 
-                    if (citas.length === 0) {
-                        upcomingAppointmentsDiv.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-info\" role=\"alert\">No tienes citas agendadas aún. ¡Agenda una!</div></div>`;
-                        return;
-                    }
+                    // Filtrar citas para mostrar solo las futuras (opcional, si quieres un filtro estricto)
+                    // const now = new Date();
+                    // const upcoming = citas.filter(cita => new Date(cita.fecha) >= now);
 
-                    // Ordenar citas por fecha (ascendente)
-                    citas.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                    if (citas.length === 0) { // Usamos citas.length para mostrar mensaje si no hay ninguna
+                        document.getElementById('noUpcomingAppointmentsMessage').style.display = 'block';
+                    } else {
+                        citas.forEach(cita => {
+                            // FIX para el problema de un día antes:
+                            const [year, month, day] = cita.fecha.split('-').map(Number);
+                            const displayDate = new Date(year, month - 1, day); // month - 1 porque los meses en JS son 0-indexados
+                            
+                            const formattedDate = displayDate.toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
 
-                    // Mostrar solo las 3 primeras o menos si hay menos de 3
-                    const citasToShow = citas.slice(0, 3);
-
-                    citasToShow.forEach(cita => {
-                        const appointmentCard = `
-                            <div class="col-md-6 col-lg-4 mb-4">
-                                <div class="card card-appointment h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-user-md me-2"></i>${cita.medico}</h5>
-                                        <p class="card-text"><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong>${cita.especialidad}</strong></p>
-                                        <p class="card-text"><i class="fas fa-calendar-alt me-2"></i>Fecha: <strong>${new Date(cita.fecha).toLocaleDateString()}</strong></p>
-                                        <p class="card-text"><i class="fas fa-user me-2"></i>Paciente: <strong>${cita.Paciente ? cita.Paciente.nombre : 'N/A'}</strong></p>
-                                        <div class="d-grid mt-3">
-                                            <a href="citas.html" class="btn btn-outline-purple btn-sm">Ver todas mis citas</a>
+                            const appointmentCard = `
+                                <div class="col-md-6 mb-4">
+                                    <div class="card card-appointment h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${cita.Doctor?.nombre || 'Médico no encontrado'}</h5>
+                                            <p class="card-text"><i class="fas fa-stethoscope me-2"></i>Especialidad: <strong>${cita.Doctor?.especialidad || cita.especialidad}</strong></p>
+                                            <p class="card-text"><i class="fas fa-calendar-alt me-2"></i>Fecha: <strong>${formattedDate}</strong></p>
+                                            <p class="card-text"><i class="fas fa-clock me-2"></i>Hora: <strong>${cita.hora || 'Hora no especificada'}</strong></p>
+                                            <div class="d-grid mt-3">
+                                                <a href="citas.html" class="btn btn-outline-purple btn-sm">Ver Detalles / Reagendar</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                        upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentCard);
-                    });
+                            `;
+                            upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentCard);
+                        });
+                    }
                 } catch (error) {
                     console.error("Error al cargar citas:", error);
-                    upcomingAppointmentsDiv.innerHTML = `<div class=\"col-12 text-center\"><div class=\"alert alert-danger\" role=\"alert\">Error al cargar sus citas. Intente más tarde.</div></div>`;
+                    upcomingAppointmentsDiv.innerHTML = `<div class="col-12 text-center"><div class="alert alert-danger" role="alert">Error al cargar sus citas. Intente más tarde.</div></div>`;
                 }
             }
 

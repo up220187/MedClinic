@@ -1,36 +1,19 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { sequelize } = require('../config/db'); // <-- ¡Añade las llaves {} aquí!
+const Doctor = require('./Doctor');
+const Paciente = require('./Paciente');
 
 const Appointment = sequelize.define('Appointment', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  medico: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  especialidad: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  fecha: {
-    type: DataTypes.DATEONLY,
-    allowNull: false
-  },
-  pacienteId: { 
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  doctorId: {   
-    type: DataTypes.INTEGER,
-    allowNull: false
-  }
-}, {
-  tableName: 'Citas',
-  timestamps: true
+  medico: DataTypes.STRING,
+  especialidad: DataTypes.STRING,
+  fecha: DataTypes.DATEONLY,
+  hora: DataTypes.STRING, // <-- Asegúrate de que esto esté aquí
+  pacienteId: DataTypes.INTEGER,
+  doctorId: DataTypes.INTEGER
 });
 
+// Asociaciones
+Appointment.belongsTo(Doctor, { foreignKey: 'doctorId' });
+Appointment.belongsTo(Paciente, { foreignKey: 'pacienteId' });
 
 module.exports = Appointment;
