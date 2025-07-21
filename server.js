@@ -65,7 +65,7 @@ const startServer = async () => {
     // Solo si el archivo de la base de datos (ej. medclinic.sqlite) es nuevo/vacío,
     // creará las tablas desde cero. Si existen datos inconsistentes (como IDs duplicados),
     // aún podría dar errores si no se borra la base de datos antes.
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: false });
     console.log('Modelos sincronizados con la base de datos (tablas alteradas si fue necesario).');
   } catch (error) {
     console.error('❌ Error al sincronizar modelos:', error);
